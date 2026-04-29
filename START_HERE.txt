@@ -1,0 +1,356 @@
+╔════════════════════════════════════════════════════════════════╗
+║                    PROJECT FILE INDEX                          ║
+║                                                                ║
+║        CSE471 - Resume & Job Portal API - Student ID: 1008    ║
+╚════════════════════════════════════════════════════════════════╝
+
+PROJECT LOCATION:
+/Users/atefahabab/Desktop/471 2 features/
+
+═════════════════════════════════════════════════════════════════
+
+🎯 WHICH FILE TO READ FIRST?
+
+1. START HERE (First Time Setup):
+   📄 QUICK_START_GUIDE.txt
+
+   What it covers:
+   - How to start MongoDB
+   - How to run the server (npm start)
+   - How to import Postman collection
+   - Testing order for all APIs
+   - Common issues & solutions
+
+═════════════════════════════════════════════════════════════════
+
+📚 COMPLETE FILE GUIDE
+─────────────────────────────────────────────────────────────────
+
+SECTION 1: GETTING STARTED
+─────────────────────────────────────────────────────────────────
+
+📄 QUICK_START_GUIDE.txt
+   ⭐ Read this first!
+   - Ensure MongoDB is running
+   - Start server: npm start
+   - Import Postman collection
+   - Quick testing guide
+   - Troubleshooting
+
+📄 COMPLETE_SETUP_GUIDE.txt
+   - Exact command line instructions
+   - Expected output for each command
+   - Step-by-step API testing
+   - Detailed troubleshooting
+
+═════════════════════════════════════════════════════════════════
+
+SECTION 2: PROJECT DOCUMENTATION
+─────────────────────────────────────────────────────────────────
+
+📄 CSE471_Assignment_API_Documentation.txt
+   ⭐ MOST IMPORTANT FOR ASSIGNMENT
+   - All 16 API endpoints documented
+   - Code snippets for each API
+   - Request/response examples
+   - Database schemas
+   - Setup instructions
+
+   Use this to:
+   - Understand each API
+   - Copy code snippets
+   - Generate documentation
+   - Create assignment report
+
+📄 README.md
+   - Project overview
+   - Tech stack details
+   - Quick API summary table
+   - Installation steps
+   - Example requests in curl
+
+═════════════════════════════════════════════════════════════════
+
+SECTION 3: PROJECT OVERVIEW
+─────────────────────────────────────────────────────────────────
+
+📄 PROJECT_SUBMISSION_SUMMARY.txt
+   - All deliverables checklist
+   - Feature overview
+   - Technology stack
+   - API summary table
+   - Database statistics
+   - Assignment checklist
+
+📄 FILE_STRUCTURE_GUIDE.txt
+   - All files explained
+   - What's in each folder
+   - File sizes
+   - What to submit
+   - Key files for reference
+
+═════════════════════════════════════════════════════════════════
+
+SECTION 4: POSTMAN TESTING
+─────────────────────────────────────────────────────────────────
+
+📄 Resume_Job_Portal_API.postman_collection.json
+   - Ready to import in Postman
+   - All 16 endpoints configured
+   - Collection variables included
+   - Example request bodies
+
+   How to use:
+   1. Open Postman
+   2. Click "Import"
+   3. Select this file
+   4. Test endpoints in order
+
+═════════════════════════════════════════════════════════════════
+
+SECTION 5: BACKEND CODE
+─────────────────────────────────────────────────────────────────
+
+Location: /backend/
+
+📂 Main Files:
+   📄 server.js
+      Main application entry point
+      - Runs on port 1008
+      - Sets up Express
+      - Configures middleware
+      - Imports routes
+
+   📄 package.json
+      Dependencies and scripts
+      - Lists npm packages
+      - npm start command
+
+   📄 .env
+      Environment configuration
+      - MongoDB connection string
+      - Port number
+
+   📄 .gitignore
+      Git ignore rules
+
+📂 Controllers:
+   📄 controllers/resumeController.js
+      7 Resume APIs implementation
+      - uploadResume
+      - parseResume
+      - getResume
+      - getUserResumes
+      - updateResume
+      - deleteResume
+      - downloadResume
+
+   📄 controllers/jobPostingController.js
+      9 Job APIs implementation
+      - createJobPosting
+      - getJobPosting
+      - getAllJobPostings
+      - getEmployerJobs
+      - updateJobPosting
+      - closeJobPosting
+      - deleteJobPosting
+      - searchJobsBySkills
+      - incrementApplicants
+
+📂 Models:
+   📄 models/Resume.js
+      Resume database schema
+
+   📄 models/JobPosting.js
+      Job Posting database schema
+
+📂 Routes:
+   📄 routes/resumeRoutes.js
+      Resume API routes
+
+   📄 routes/jobPostingRoutes.js
+      Job Posting API routes
+
+📂 Configuration:
+   📄 config/database.js
+      MongoDB connection setup
+
+📂 Dependencies:
+   📂 node_modules/
+      All npm packages (already installed)
+
+═════════════════════════════════════════════════════════════════
+
+🗂️ ORGANIZED BY USE CASE
+─────────────────────────────────────────────────────────────────
+
+USE CASE 1: "I want to start the server"
+   1. Read: QUICK_START_GUIDE.txt
+   2. Run: cd backend && npm start
+   3. Watch for success message
+
+USE CASE 2: "I want to test the APIs in Postman"
+   1. Start server (see above)
+   2. Import: Resume_Job_Portal_API.postman_collection.json
+   3. Follow: QUICK_START_GUIDE.txt testing order
+   4. Take screenshots
+
+USE CASE 3: "I want to understand the API code"
+   1. Read: CSE471_Assignment_API_Documentation.txt
+   2. Look at: controllers/* files
+   3. Review: models/* files
+
+USE CASE 4: "I don't know what to do"
+   1. Start with: QUICK_START_GUIDE.txt
+   2. If stuck, check: COMPLETE_SETUP_GUIDE.txt
+
+USE CASE 5: "I need to submit the assignment"
+   1. Copy sections from: CSE471_Assignment_API_Documentation.txt
+   2. Test all APIs in Postman
+   3. Take screenshots for each API
+   4. Add screenshots to assignment document
+   5. Include backend/ folder
+
+USE CASE 6: "Something isn't working"
+   1. Check: QUICK_START_GUIDE.txt (Troubleshooting section)
+   2. Review: COMPLETE_SETUP_GUIDE.txt (detailed steps)
+   3. Verify: MongoDB is running
+   4. Verify: Port 1008 is available
+
+═════════════════════════════════════════════════════════════════
+
+📊 API SUMMARY
+─────────────────────────────────────────────────────────────────
+
+FEATURE 01: Resume Management (7 APIs)
+Feature 02: Job Posting (9 APIs)
+Total: 16 REST APIs
+
+All endpoints:
+✓ Have code snippets
+✓ Have example requests
+✓ Have example responses
+✓ Are documented in CSE471_Assignment_API_Documentation.txt
+✓ Are in Postman collection
+
+═════════════════════════════════════════════════════════════════
+
+📋 TECHNICAL SPECIFICATIONS
+─────────────────────────────────────────────────────────────────
+
+Backend Framework:    Node.js + Express.js
+Database:            MongoDB
+Port:                1008
+API Style:           RESTful (JSON)
+File Upload:         PDF/DOC/DOCX supported
+Authentication:      Not included (example api)
+Status Codes:        200, 201, 400, 404, 500
+Response Format:     JSON with success flag
+
+═════════════════════════════════════════════════════════════════
+
+✅ QUICK CHECKLIST
+─────────────────────────────────────────────────────────────────
+
+Before Testing:
+  ☐ MongoDB running
+  ☐ Node.js installed
+  ☐ Postman installed
+
+Setup:
+  ☐ Read QUICK_START_GUIDE.txt
+  ☐ Run: npm start
+  ☐ See success message
+  ☐ Open Postman
+
+Testing:
+  ☐ Import Postman collection
+  ☐ Test Resume APIs (7)
+  ☐ Test Job APIs (9)
+  ☐ Take screenshots
+  ☐ All endpoints work
+
+Assignment:
+  ☐ Copy code snippets
+  ☐ Add screenshots
+  ☐ Include backend/ folder
+  ☐ Prepare documentation
+
+═════════════════════════════════════════════════════════════════
+
+🔗 FILE INTERCONNECTIONS
+─────────────────────────────────────────────────────────────────
+
+Main Dependencies:
+
+server.js
+  ├── Imports routes
+  │   ├── resumeRoutes.js
+  │   │   └── resumeController.js
+  │   │       └── Resume model
+  │   │
+  │   └── jobPostingRoutes.js
+  │       └── jobPostingController.js
+  │           └── JobPosting model
+  │
+  └── config/database.js (MongoDB)
+
+═════════════════════════════════════════════════════════════════
+
+💡 HELPFUL TIPS
+─────────────────────────────────────────────────────────────────
+
+1. Always start MongoDB first
+2. Run npm start from /backend folder
+3. Import Postman collection AFTER server is running
+4. Test endpoints in order (create before read)
+5. Copy the resumeId and jobId for use in other tests
+6. Keep server running while using Postman
+
+═════════════════════════════════════════════════════════════════
+
+📞 QUICK REFERENCE
+─────────────────────────────────────────────────────────────────
+
+Server URL:              http://localhost:1008
+API Base URL:            http://localhost:1008/api
+Resume Endpoints:        /api/resumes/*
+Job Endpoints:           /api/jobs/*
+Health Check:            /api/health
+Port:                    1008
+
+═════════════════════════════════════════════════════════════════
+
+🎓 ASSIGNMENT REQUIREMENTS MET
+─────────────────────────────────────────────────────────────────
+
+✅ Framework: Node.js + Express
+✅ Database: MongoDB connected
+✅ Port: 1008 (from Student ID)
+✅ APIs: All 16 implemented
+✅ Code snippets: Included for all APIs
+✅ Postman: Collection ready to import
+✅ Documentation: Complete and detailed
+✅ Screenshots: Ready to capture in Postman
+
+═════════════════════════════════════════════════════════════════
+
+🚀 READY TO START?
+─────────────────────────────────────────────────────────────────
+
+Next Steps:
+
+1. Open QUICK_START_GUIDE.txt
+2. Follow step-by-step instructions
+3. Start with: npm start
+4. Test in Postman
+5. Take screenshots
+6. Prepare assignment
+
+═════════════════════════════════════════════════════════════════
+
+All files are in: /Users/atefahabab/Desktop/471 2 features/
+
+You're all set! 🎉
+
+═════════════════════════════════════════════════════════════════

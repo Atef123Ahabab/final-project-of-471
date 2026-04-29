@@ -1,0 +1,72 @@
+.feature-candidates .candidate-load-card,
+.feature-candidates .candidate-list-card {
+	border-top: 4px solid #b65a2a;
+}
+
+.feature-candidates .candidate-list-card .list-item {
+	background: linear-gradient(180deg, #fffdf8, #fdf6ef);
+}
+
+.feature-candidates .action-row {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.feature-candidates .action-row .primary {
+	background: #27ae60;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 600;
+	transition: background-color 0.3s ease;
+}
+
+.feature-candidates .action-row .primary:hover {
+	background: #229954;
+}
+
+.feature-candidates .action-row .secondary {
+	background: #f39c12;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 600;
+	transition: background-color 0.3s ease;
+}
+
+.feature-candidates .action-row .secondary:hover {
+	background: #e67e22;
+}
+
+.feature-candidates .status-accepted {
+	background: #27ae60;
+	color: white;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 0.9rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.feature-candidates .action-row .warning {
+	background: #e74c3c;
+	color: white;
+	border: none;
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 600;
+	transition: background-color 0.3s ease;
+}
+
+.feature-candidates .action-row .warning:hover {
+	background: #c0392b;
+}

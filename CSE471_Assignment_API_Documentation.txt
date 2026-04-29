@@ -1,0 +1,1046 @@
+CSE471: System Analysis and Design
+Lab Assignment on API Postman Collection
+
+================================================================
+
+PROJECT TITLE: Resume & Job Portal System
+GROUP NUMBER: [GROUP_NUMBER]
+BACKEND FRAMEWORK: Node.js + Express
+DATABASE: MongoDB
+SUBMITTED BY: [YOUR_NAME]
+STUDENT ID: 1008
+SECTION: [SECTION]
+DATE: [SUBMISSION_DATE]
+
+================================================================
+
+PROJECT OVERVIEW:
+This project implements REST APIs for two main features:
+1. Resume Upload & Parsing: Users can upload resumes (PDF/DOC), and the system automatically extracts skills and experience.
+2. Job Posting & Management: Employers can create, edit, and close job postings with required skills and qualifications.
+
+SERVER DETAILS:
+- Framework: Node.js + Express.js
+- Database: MongoDB
+- Port: 1008
+- Base URL: http://localhost:1008
+
+================================================================
+
+FEATURE 01: RESUME UPLOAD & PARSING
+================================================================
+
+API 1.1: Upload Resume
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/upload
+HTTP Method: POST
+Headers:
+  - Content-Type: multipart/form-data
+
+Body/Parameters:
+  - File upload (resume): PDF/DOC/DOCX file
+  - userId (string, required): Unique user identifier
+  - fullName (string, optional): User's full name
+  - email (string, optional): User's email address
+  - phone (string, optional): User's phone number
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.uploadResume = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: 'No file uploaded',
+      });
+    }
+
+    const { userId, fullName, email, phone } = req.body;
+
+    const fileType = req.file.mimetype.includes('pdf')
+      ? 'pdf'
+      : req.file.mimetype.includes('word')
+      ? 'docx'
+      : 'doc';
+
+    const resume = new Resume({
+      userId,
+      fileName: req.file.originalname,
+      fileType,
+      filePath: req.file.path,
+      fullName: fullName || 'Not Provided',
+      email: email || 'Not Provided',
+      phone: phone || 'Not Provided',
+      skills: [],
+      experience: [],
+      education: [],
+    });
+
+    await resume.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Resume uploaded successfully',
+      data: {
+        resumeId: resume._id,
+        fileName: resume.fileName,
+        uploadedAt: resume.uploadedAt,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error uploading resume',
+      error: error.message,
+    });
+  }
+};
+
+Sample Response:
+────────────────
+{
+  "success": true,
+  "message": "Resume uploaded successfully",
+  "data": {
+    "resumeId": "507f1f77bcf86cd799439011",
+    "fileName": "john_doe_resume.pdf",
+    "uploadedAt": "2024-03-14T10:30:00.000Z"
+  }
+}
+
+════════════════════════════════════════════════════════════════
+
+API 1.2: Parse Resume (Extract Skills & Experience)
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/{resumeId}/parse
+HTTP Method: POST
+Headers:
+  - Content-Type: application/json
+
+Body/Parameters:
+{
+  "skills": ["JavaScript", "Node.js", "MongoDB"],
+  "experience": [
+    {
+      "jobTitle": "Senior Developer",
+      "company": "Tech Company",
+      "duration": "2 years",
+      "description": "Developed APIs"
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's",
+      "institution": "University",
+      "year": "2020"
+    }
+  ],
+  "summary": "Experienced developer..."
+}
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.parseResume = async (req, res) => {
+  try {
+    const { resumeId } = req.params;
+    const { skills, experience, education, summary } = req.body;
+
+    const resume = await Resume.findByIdAndUpdate(
+      resumeId,
+      {
+        skills: skills || [],
+        experience: experience || [],
+        education: education || [],
+        summary: summary || '',
+      },
+      { new: true }
+    );
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resume not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Resume parsed successfully',
+      data: {
+        resumeId: resume._id,
+        skills: resume.skills,
+        experience: resume.experience,
+        education: resume.education,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error parsing resume',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 1.3: Get Resume by ID
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/{resumeId}
+HTTP Method: GET
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.getResume = async (req, res) => {
+  try {
+    const { resumeId } = req.params;
+    const resume = await Resume.findById(resumeId);
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resume not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: resume,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching resume',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 1.4: Get All Resumes by User
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/user/{userId}
+HTTP Method: GET
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.getUserResumes = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const resumes = await Resume.find({ userId }).sort({ uploadedAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: resumes.length,
+      data: resumes,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching resumes',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 1.5: Update Resume
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/{resumeId}
+HTTP Method: PUT
+Headers:
+  - Content-Type: application/json
+
+Body/Parameters:
+{
+  "skills": ["Updated", "Skills"],
+  "experience": [],
+  "education": [],
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "phone": "+1-555-0123",
+  "summary": "Updated summary"
+}
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.updateResume = async (req, res) => {
+  try {
+    const { resumeId } = req.params;
+    const { skills, experience, education, fullName, email, phone, summary } = req.body;
+
+    const resume = await Resume.findByIdAndUpdate(
+      resumeId,
+      {
+        skills: skills || undefined,
+        experience: experience || undefined,
+        education: education || undefined,
+        fullName: fullName || undefined,
+        email: email || undefined,
+        phone: phone || undefined,
+        summary: summary || undefined,
+      },
+      { new: true }
+    );
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resume not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Resume updated successfully',
+      data: resume,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error updating resume',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 1.6: Delete Resume
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/{resumeId}
+HTTP Method: DELETE
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.deleteResume = async (req, res) => {
+  try {
+    const { resumeId } = req.params;
+    const resume = await Resume.findByIdAndDelete(resumeId);
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resume not found',
+      });
+    }
+
+    if (fs.existsSync(resume.filePath)) {
+      fs.unlinkSync(resume.filePath);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Resume deleted successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting resume',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 1.7: Download Resume File
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/resumes/{resumeId}/download
+HTTP Method: GET
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.downloadResume = async (req, res) => {
+  try {
+    const { resumeId } = req.params;
+    const resume = await Resume.findById(resumeId);
+
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resume not found',
+      });
+    }
+
+    res.download(resume.filePath, resume.fileName);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error downloading resume',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+FEATURE 02: JOB POSTING & MANAGEMENT
+════════════════════════════════════════════════════════════════
+
+API 2.1: Create Job Posting
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/create
+HTTP Method: POST
+Headers:
+  - Content-Type: application/json
+
+Body/Parameters:
+{
+  "employerId": "employer-001",
+  "jobTitle": "Senior Full-Stack Developer",
+  "description": "Looking for an experienced full-stack developer...",
+  "requiredSkills": ["JavaScript", "Node.js", "MongoDB"],
+  "qualifications": ["Bachelor's degree", "4+ years experience"],
+  "location": "San Francisco, CA",
+  "salary": {
+    "min": 120000,
+    "max": 180000,
+    "currency": "USD"
+  },
+  "jobType": "Full-Time",
+  "experience": {
+    "min": 4,
+    "max": 8
+  },
+  "deadline": "2024-04-30"
+}
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.createJobPosting = async (req, res) => {
+  try {
+    const {
+      employerId,
+      jobTitle,
+      description,
+      requiredSkills,
+      qualifications,
+      location,
+      salary,
+      jobType,
+      experience,
+      deadline,
+    } = req.body;
+
+    if (!employerId || !jobTitle || !description || !location) {
+      return res.status(400).json({
+        success: false,
+        message: 'Required fields are missing',
+      });
+    }
+
+    const jobPosting = new JobPosting({
+      employerId,
+      jobTitle,
+      description,
+      requiredSkills: requiredSkills || [],
+      qualifications: qualifications || [],
+      location,
+      salary: salary || {},
+      jobType: jobType || 'Full-Time',
+      experience: experience || {},
+      deadline: deadline || null,
+      status: 'Open',
+      applicantsCount: 0,
+    });
+
+    await jobPosting.save();
+
+    res.status(201).json({
+      success: true,
+      message: 'Job posting created successfully',
+      data: {
+        jobId: jobPosting._id,
+        jobTitle: jobPosting.jobTitle,
+        status: jobPosting.status,
+        createdAt: jobPosting.createdAt,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error creating job posting',
+      error: error.message,
+    });
+  }
+};
+
+Sample Response:
+────────────────
+{
+  "success": true,
+  "message": "Job posting created successfully",
+  "data": {
+    "jobId": "507f1f77bcf86cd799439012",
+    "jobTitle": "Senior Full-Stack Developer",
+    "status": "Open",
+    "createdAt": "2024-03-14T10:30:00.000Z"
+  }
+}
+
+════════════════════════════════════════════════════════════════
+
+API 2.2: Get Job Posting by ID
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/{jobId}
+HTTP Method: GET
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.getJobPosting = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const job = await JobPosting.findById(jobId);
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job posting not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching job posting',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.3: Get All Job Postings
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs?status=Open&location=&jobType=Full-Time
+HTTP Method: GET
+Headers: None
+Query Parameters (optional):
+  - status: Filter by job status (Open, Closed, On Hold)
+  - location: Filter by location
+  - jobType: Filter by job type (Full-Time, Part-Time, Contract, Internship)
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.getAllJobPostings = async (req, res) => {
+  try {
+    const { status, location, jobType } = req.query;
+    let filter = {};
+
+    if (status) filter.status = status;
+    if (location) filter.location = { $regex: location, $options: 'i' };
+    if (jobType) filter.jobType = jobType;
+
+    const jobs = await JobPosting.find(filter).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: jobs.length,
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching job postings',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.4: Get Jobs by Employer
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/employer/{employerId}
+HTTP Method: GET
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.getEmployerJobs = async (req, res) => {
+  try {
+    const { employerId } = req.params;
+    const jobs = await JobPosting.find({ employerId }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: jobs.length,
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching employer jobs',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.5: Update Job Posting
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/{jobId}
+HTTP Method: PUT
+Headers:
+  - Content-Type: application/json
+
+Body/Parameters (Any fields to update):
+{
+  "jobTitle": "Updated Job Title",
+  "description": "Updated description",
+  "requiredSkills": ["Updated", "Skills"],
+  "salary": {
+    "min": 130000,
+    "max": 190000,
+    "currency": "USD"
+  },
+  "status": "Open"
+}
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.updateJobPosting = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const { jobTitle, description, requiredSkills, location, salary, status } = req.body;
+
+    const job = await JobPosting.findByIdAndUpdate(
+      jobId,
+      {
+        jobTitle: jobTitle || undefined,
+        description: description || undefined,
+        requiredSkills: requiredSkills || undefined,
+        salary: salary || undefined,
+        status: status || undefined,
+        updatedAt: Date.now(),
+      },
+      { new: true }
+    );
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job posting not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Job posting updated successfully',
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error updating job posting',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.6: Close Job Posting
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/{jobId}/close
+HTTP Method: PUT
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.closeJobPosting = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const job = await JobPosting.findByIdAndUpdate(
+      jobId,
+      { status: 'Closed', updatedAt: Date.now() },
+      { new: true }
+    );
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job posting not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Job posting closed successfully',
+      data: job,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error closing job posting',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.7: Delete Job Posting
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/{jobId}
+HTTP Method: DELETE
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.deleteJobPosting = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const job = await JobPosting.findByIdAndDelete(jobId);
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job posting not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Job posting deleted successfully',
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting job posting',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.8: Search Jobs by Skills
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/search/skills
+HTTP Method: POST
+Headers:
+  - Content-Type: application/json
+
+Body/Parameters:
+{
+  "skills": ["JavaScript", "Node.js", "MongoDB"]
+}
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.searchJobsBySkills = async (req, res) => {
+  try {
+    const { skills } = req.body;
+
+    if (!skills || !Array.isArray(skills) || skills.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Skills array is required',
+      });
+    }
+
+    const jobs = await JobPosting.find({
+      status: 'Open',
+      requiredSkills: { $in: skills },
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      count: jobs.length,
+      data: jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error searching jobs',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+API 2.9: Apply to Job (Increment Applicants)
+────────────────────────────────────────────────────────────────
+Endpoint URL: http://localhost:1008/api/jobs/{jobId}/apply
+HTTP Method: PUT
+Headers: None
+Body: None
+
+Code Snippet (Node.js - Controller):
+──────────────────────────────────────
+exports.incrementApplicants = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    const job = await JobPosting.findByIdAndUpdate(
+      jobId,
+      { $inc: { applicantsCount: 1 } },
+      { new: true }
+    );
+
+    if (!job) {
+      return res.status(404).json({
+        success: false,
+        message: 'Job posting not found',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Application recorded successfully',
+      data: {
+        jobId: job._id,
+        applicantsCount: job.applicantsCount,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error recording application',
+      error: error.message,
+    });
+  }
+};
+
+════════════════════════════════════════════════════════════════
+
+SETUP & RUNNING INSTRUCTIONS
+════════════════════════════════════════════════════════════════
+
+Prerequisites:
+- Node.js installed (v14 or higher)
+- MongoDB running locally or accessible via connection string
+- Postman (for API testing)
+
+Installation Steps:
+
+1. Navigate to backend directory:
+   cd backend
+
+2. Install dependencies:
+   npm install
+
+3. Create .env file (already created with default settings):
+   MONGODB_URI=mongodb://localhost:27017/resume-job-portal
+   PORT=1008
+
+4. Ensure MongoDB is running:
+   - For local MongoDB: mongod
+   - Or update MONGODB_URI in .env for remote connection
+
+5. Start the server:
+   npm start
+
+   Output should show:
+   ========================================
+   Server started successfully!
+   Port: 1008
+   URL: http://localhost:1008
+   ========================================
+
+6. Import Postman Collection:
+   - Open Postman
+   - Click "Import"
+   - Select "Resume_Job_Portal_API.postman_collection.json"
+   - Set variables {{resumeId}} and {{jobId}} before testing
+
+════════════════════════════════════════════════════════════════
+
+DATABASE SCHEMA
+════════════════════════════════════════════════════════════════
+
+Resume Collection:
+{
+  _id: ObjectId,
+  userId: String,
+  fileName: String,
+  fileType: String (pdf, doc, docx),
+  filePath: String,
+  skills: [String],
+  experience: [
+    {
+      jobTitle: String,
+      company: String,
+      duration: String,
+      description: String
+    }
+  ],
+  education: [
+    {
+      degree: String,
+      institution: String,
+      year: String
+    }
+  ],
+  fullName: String,
+  email: String,
+  phone: String,
+  summary: String,
+  rawText: String,
+  uploadedAt: Date,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+JobPosting Collection:
+{
+  _id: ObjectId,
+  employerId: String,
+  jobTitle: String,
+  description: String,
+  requiredSkills: [String],
+  qualifications: [String],
+  location: String,
+  salary: {
+    min: Number,
+    max: Number,
+    currency: String
+  },
+  jobType: String (Full-Time, Part-Time, Contract, Internship),
+  experience: {
+    min: Number,
+    max: Number
+  },
+  status: String (Open, Closed, On Hold),
+  deadline: Date,
+  applicantsCount: Number,
+  createdAt: Date,
+  updatedAt: Date
+}
+
+════════════════════════════════════════════════════════════════
+
+POSTMAN COLLECTION IMPORT & TESTING
+════════════════════════════════════════════════════════════════
+
+Steps to Import and Test:
+
+1. Open Postman Application
+
+2. Click on "Import" button (top-left)
+
+3. Select the file: "Resume_Job_Portal_API.postman_collection.json"
+
+4. The collection will be imported with all endpoints organized by feature
+
+5. Set Collection Variables:
+   - Click on collection name
+   - Go to "Variables" tab
+   - Set {{resumeId}} and {{jobId}} values after creating resources
+
+6. Testing Flow:
+
+   Feature 01 - Resume Management:
+   a) First test: API 1.1 - Upload Resume
+      - This will return a resumeId
+      - Copy the resumeId from response and set as variable
+
+   b) Then test: API 1.2 - Parse Resume
+      - Use the resumeId from step a
+
+   c) Test: API 1.3 - Get Resume by ID
+   d) Test: API 1.4 - Get All User Resumes
+   e) Test: API 1.5 - Update Resume
+   f) Test: API 1.7 - Download Resume File
+   g) Test: API 1.6 - Delete Resume (last step)
+
+   Feature 02 - Job Postings:
+   a) First test: API 2.1 - Create Job Posting
+      - This will return a jobId
+      - Copy the jobId from response and set as variable
+
+   b) Then test: API 2.2 - Get Job Posting by ID
+   c) Test: API 2.3 - Get All Job Postings
+   d) Test: API 2.4 - Get Jobs by Employer
+   e) Test: API 2.5 - Update Job Posting
+   f) Test: API 2.9 - Apply to Job
+   g) Test: API 2.6 - Close Job Posting
+   h) Test: API 2.7 - Delete Job Posting (last step)
+   i) Test: API 2.8 - Search Jobs by Skills
+
+════════════════════════════════════════════════════════════════
+
+POSTMAN SCREENSHOT EXAMPLES
+════════════════════════════════════════════════════════════════
+
+[Add screenshots here after running tests in Postman]
+
+Example format for each screenshot:
+- Endpoint URL shown
+- HTTP Method shown
+- Request Headers shown
+- Request Body shown
+- Response Status (200, 201, 404, etc.) shown
+- Response Body (JSON) shown
+
+════════════════════════════════════════════════════════════════
+
+PROJECT STRUCTURE
+════════════════════════════════════════════════════════════════
+
+backend/
+├── server.js                          (Main server file)
+├── package.json                       (Dependencies)
+├── .env                              (Environment variables)
+├── config/
+│   └── database.js                   (MongoDB connection)
+├── models/
+│   ├── Resume.js                     (Resume schema)
+│   └── JobPosting.js                 (Job posting schema)
+├── controllers/
+│   ├── resumeController.js           (Resume APIs logic)
+│   └── jobPostingController.js       (Job posting APIs logic)
+├── routes/
+│   ├── resumeRoutes.js               (Resume API routes)
+│   └── jobPostingRoutes.js           (Job posting API routes)
+└── uploads/
+    └── resumes/                      (Uploaded resume files)
+
+════════════════════════════════════════════════════════════════
+
+NOTES & OBSERVATIONS
+════════════════════════════════════════════════════════════════
+
+1. All APIs follow RESTful conventions
+2. MongoDB ObjectId is used as primary key for all records
+3. Timestamps (createdAt, updatedAt) are automatically managed
+4. File upload endpoint uses multipart/form-data
+5. All responses follow standard JSON format with success flag
+6. Error handling is implemented for all endpoints
+7. Database queries include proper error handling and validation
+8. Job search functionality filters by required skills
+9. Resume download endpoint streams file to client
+10. Status codes used:
+    - 200: Success (GET, successful POST/PUT)
+    - 201: Created (POST creates new resource)
+    - 400: Bad Request (validation errors)
+    - 404: Not Found
+    - 500: Server Error
+
+════════════════════════════════════════════════════════════════
+
+End of Document

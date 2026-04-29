@@ -1,0 +1,263 @@
+QUICK START GUIDE
+═════════════════════════════════════════════════════════════════
+
+CSE471 Assignment - Resume & Job Portal API
+Student ID: 1008
+Port: 1008
+
+═════════════════════════════════════════════════════════════════
+
+STEP 1: ENSURE MONGODB IS RUNNING
+─────────────────────────────────────────────────────────────────
+
+Option A - Local MongoDB:
+  macOS:
+    brew services start mongodb-community
+
+  Windows:
+    Services → MongoDB → Start
+
+  Linux:
+    sudo systemctl start mongod
+
+Option B - MongoDB Atlas (Cloud):
+  1. Create account at https://www.mongodb.com/cloud/atlas
+  2. Create a cluster and get connection string
+  3. Update .env file:
+     MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/resume-job-portal
+
+═════════════════════════════════════════════════════════════════
+
+STEP 2: START THE SERVER
+─────────────────────────────────────────────────────────────────
+
+1. Open Terminal/Command Prompt
+2. Navigate to backend directory:
+   cd "backend"
+
+3. Start the server:
+   npm start
+
+4. Verify server is running:
+   ✓ Look for: "Server started successfully!"
+   ✓ URL: http://localhost:1008
+   ✓ Test: Open http://localhost:1008/api/health in browser
+
+═════════════════════════════════════════════════════════════════
+
+STEP 3: IMPORT POSTMAN COLLECTION
+─────────────────────────────────────────────────────────────────
+
+1. Open Postman application
+2. Click "Import" button (top-left)
+3. Select file: "Resume_Job_Portal_API.postman_collection.json"
+4. Collection will appear in sidebar
+5. Expand to see all organized endpoints
+
+═════════════════════════════════════════════════════════════════
+
+STEP 4: TEST APIs IN POSTMAN
+─────────────────────────────────────────────────────────────────
+
+FEATURE 01 - Resume Testing Order:
+  1. POST /api/resumes/upload
+     → Copy returned resumeId and save it
+
+  2. POST /api/resumes/{resumeId}/parse
+     → Use resumeId from step 1
+
+  3. GET /api/resumes/{resumeId}
+
+  4. GET /api/resumes/user/user-001
+
+  5. PUT /api/resumes/{resumeId}
+
+  6. GET /api/resumes/{resumeId}/download
+
+  7. DELETE /api/resumes/{resumeId}
+
+
+FEATURE 02 - Job Posting Testing Order:
+  1. POST /api/jobs/create
+     → Copy returned jobId and save it
+
+  2. GET /api/jobs/{jobId}
+     → Use jobId from step 1
+
+  3. GET /api/jobs (with filters)
+
+  4. GET /api/jobs/employer/employer-001
+
+  5. PUT /api/jobs/{jobId}
+
+  6. PUT /api/jobs/{jobId}/apply
+
+  7. POST /api/jobs/search/skills
+
+  8. PUT /api/jobs/{jobId}/close
+
+  9. DELETE /api/jobs/{jobId}
+
+═════════════════════════════════════════════════════════════════
+
+POSTMAN VARIABLES SETUP
+─────────────────────────────────────────────────────────────────
+
+1. In Postman collection, go to "Variables" tab
+2. Set values:
+   - resumeId: [from upload response]
+   - jobId: [from create job response]
+
+═════════════════════════════════════════════════════════════════
+
+COMMON ISSUES & SOLUTIONS
+─────────────────────────────────────────────────────────────────
+
+Issue: "Cannot connect to MongoDB"
+Solution:
+  - Ensure MongoDB is running (mongod service)
+  - Check connection string in .env file
+  - Test: mongosh or mongo command in terminal
+
+Issue: "Port 1008 already in use"
+Solution:
+  - Change PORT in .env file
+  - Or kill process: lsof -i :1008 | kill -9 <PID>
+
+Issue: "npm install failed"
+Solution:
+  - Delete node_modules folder
+  - Delete package-lock.json
+  - Run: npm install again
+
+Issue: "Cannot find module"
+Solution:
+  - Ensure all dependencies installed: npm install
+  - Delete node_modules and reinstall
+
+═════════════════════════════════════════════════════════════════
+
+FILE UPLOADS
+─────────────────────────────────────────────────────────────────
+
+Resume Upload Notes:
+  - Supported formats: PDF, DOC, DOCX
+  - Max file size: Check multer config in server.js
+  - Files stored in: backend/uploads/resumes/
+  - Use form-data in Postman for file upload
+
+═════════════════════════════════════════════════════════════════
+
+DOCUMENTATION FILES
+─────────────────────────────────────────────────────────────────
+
+1. README.md
+   - Project overview
+   - Installation steps
+   - API endpoints summary
+   - Database schemas
+
+2. CSE471_Assignment_API_Documentation.txt
+   - Detailed API documentation
+   - Code snippets for each endpoint
+   - Response examples
+   - Setup instructions
+
+3. Resume_Job_Portal_API.postman_collection.json
+   - Postman collection with all endpoints
+   - Ready to import and test
+   - Includes variables for dynamic values
+
+═════════════════════════════════════════════════════════════════
+
+API RESPONSE FORMAT
+─────────────────────────────────────────────────────────────────
+
+All API responses follow this format:
+
+Success Response (200, 201):
+{
+  "success": true,
+  "message": "Description of success",
+  "data": {
+    // Response data
+  }
+}
+
+Error Response (400, 404, 500):
+{
+  "success": false,
+  "message": "Error description",
+  "error": "Detailed error info"
+}
+
+═════════════════════════════════════════════════════════════════
+
+TESTING CHECKLIST
+─────────────────────────────────────────────────────────────────
+
+Resume APIs:
+  ☐ Upload resume successfully
+  ☐ Parse resume data is stored
+  ☐ Get resume by ID returns data
+  ☐ Get user resumes returns all user's files
+  ☐ Update resume modifies data
+  ☐ Download resume returns file
+  ☐ Delete resume removes data
+
+Job Posting APIs:
+  ☐ Create job posting successfully
+  ☐ Get job by ID returns data
+  ☐ Get all jobs with filters works
+  ☐ Get employer jobs returns their postings
+  ☐ Update job modifies data
+  ☐ Apply to job increments counter
+  ☐ Search by skills returns matched jobs
+  ☐ Close job changes status
+  ☐ Delete job removes data
+
+═════════════════════════════════════════════════════════════════
+
+SUBMISSION CHECKLIST
+─────────────────────────────────────────────────────────────────
+
+For Assignment Submission:
+
+✓ Backend server code (all files) ...................... [Completed]
+✓ Database models and schemas ......................... [Completed]
+✓ All API endpoints implemented ...................... [Completed]
+  - 7 Resume APIs .................................. [Completed]
+  - 9 Job Posting APIs .............................. [Completed]
+✓ Code snippets for each API ......................... [Completed]
+✓ Postman collection with all endpoints ............. [Completed]
+✓ API testing in Postman ............................. [Ready to Test]
+✓ Screenshots of API tests ........................... [To be added]
+✓ Assignment documentation ........................... [Completed]
+✓ Running server on port 1008 ....................... [Ready to Run]
+
+═════════════════════════════════════════════════════════════════
+
+NEXT STEPS
+─────────────────────────────────────────────────────────────────
+
+1. Start MongoDB service
+2. Run: npm start (in backend folder)
+3. Open Postman and import collection
+4. Test all endpoints systematically
+5. Take screenshots of each test
+6. Document any modifications
+7. Prepare assignment document with screenshots
+
+═════════════════════════════════════════════════════════════════
+
+Server Status Commands:
+  Check if running: curl http://localhost:1008/api/health
+  Check API list: curl http://localhost:1008
+
+Support Files:
+  - All code in: /backend folder
+  - Documentation: CSE471_Assignment_API_Documentation.txt
+  - Postman pre-configured: Resume_Job_Portal_API.postman_collection.json
+  - Project README: README.md
+
+═════════════════════════════════════════════════════════════════

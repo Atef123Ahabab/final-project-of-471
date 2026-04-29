@@ -1,0 +1,374 @@
+FILE STRUCTURE & CONTENTS
+═══════════════════════════════════════════════════════════════════
+
+Project Root: /Users/atefahabab/Desktop/471 2 features
+
+═══════════════════════════════════════════════════════════════════
+
+PROJECT ROOT FILES (Documentation & Configuration)
+─────────────────────────────────────────────────────────────────
+
+📄 README.md
+   Project overview, tech stack, installation instructions, API summary
+   Use this as the main reference document
+
+📄 CSE471_Assignment_API_Documentation.txt
+   ⭐ COMPLETE API DOCUMENTATION
+   - Detailed endpoint descriptions
+   - Code snippets for every API
+   - Request/response examples
+   - Database schemas
+   - Setup & testing instructions
+   Use for assignment submission and reference
+
+📄 QUICK_START_GUIDE.txt
+   Step-by-step quick start guide
+   - How to start the server
+   - MongoDB setup
+   - Postman testing order
+   - Troubleshooting tips
+
+📄 PROJECT_SUBMISSION_SUMMARY.txt
+   Complete project summary
+   - All deliverables listed
+   - Feature checklist
+   - Technology stack
+   - Testing guidelines
+
+📄 Resume_Job_Portal_API.postman_collection.json
+   ⭐ POSTMAN COLLECTION (Ready to Import)
+   - 16 pre-configured API endpoints
+   - Variables for dynamic values
+   - Example request bodies
+   - Import this directly into Postman
+
+═══════════════════════════════════════════════════════════════════
+
+BACKEND CODE DIRECTORY: /backend
+─────────────────────────────────────────────────────────────────
+
+📄 server.js
+   ⭐ MAIN APPLICATION SERVER
+   - Entry point for the backend
+   - Runs on port 1008
+   - Configures Express middleware
+   - Sets up routes and error handling
+   - Creates uploads directory
+
+📄 package.json
+   ⭐ DEPENDENCIES CONFIGURATION
+   - Lists all npm packages
+   - Scripts: start, dev
+   - Version information
+
+📄 .env
+   Environment variables
+   - MongoDB URI (default: localhost:27017)
+   - Port: 1008
+   - Node environment: development
+
+📄 .gitignore
+   Git ignore rules
+   - Ignores node_modules
+   - Ignores .env file
+   - Ignores uploaded files
+
+═══════════════════════════════════════════════════════════════════
+
+DATABASE CONFIGURATION: /backend/config
+─────────────────────────────────────────────────────────────────
+
+📄 database.js
+   MongoDB connection setup
+   - Connects to MongoDB
+   - Error handling
+   - Reusable connection module
+
+═══════════════════════════════════════════════════════════════════
+
+DATA MODELS: /backend/models
+─────────────────────────────────────────────────────────────────
+
+📄 Resume.js
+   Resume Schema & Model
+   Properties:
+   - userId, fileName, fileType, filePath
+   - skills[], experience[], education[]
+   - fullName, email, phone, summary
+   - uploadedAt, timestamps
+
+📄 JobPosting.js
+   Job Posting Schema & Model
+   Properties:
+   - employerId, jobTitle, description
+   - requiredSkills[], qualifications[]
+   - location, salary{min,max,currency}
+   - jobType, experience{min,max}
+   - status, deadline, applicantsCount
+   - timestamps
+
+═══════════════════════════════════════════════════════════════════
+
+BUSINESS LOGIC: /backend/controllers
+─────────────────────────────────────────────────────────────────
+
+📄 resumeController.js
+   7 API implementations for resumesFeature 01:
+   1. uploadResume() - POST /api/resumes/upload
+   2. parseResume() - POST /api/resumes/:resumeId/parse
+   3. getResume() - GET /api/resumes/:resumeId
+   4. getUserResumes() - GET /api/resumes/user/:userId
+   5. updateResume() - PUT /api/resumes/:resumeId
+   6. deleteResume() - DELETE /api/resumes/:resumeId
+   7. downloadResume() - GET /api/resumes/:resumeId/download
+
+📄 jobPostingController.js
+   9 API implementations for job postings
+   Feature 02:
+   1. createJobPosting() - POST /api/jobs/create
+   2. getJobPosting() - GET /api/jobs/:jobId
+   3. getAllJobPostings() - GET /api/jobs
+   4. getEmployerJobs() - GET /api/jobs/employer/:employerId
+   5. updateJobPosting() - PUT /api/jobs/:jobId
+   6. closeJobPosting() - PUT /api/jobs/:jobId/close
+   7. deleteJobPosting() - DELETE /api/jobs/:jobId
+   8. searchJobsBySkills() - POST /api/jobs/search/skills
+   9. incrementApplicants() - PUT /api/jobs/:jobId/apply
+
+═══════════════════════════════════════════════════════════════════
+
+ROUTE DEFINITIONS: /backend/routes
+─────────────────────────────────────────────────────────────────
+
+📄 resumeRoutes.js
+   Express routes for resume endpoints
+   - Configures multer for file uploads
+   - Maps URLs to controller functions
+   - 7 resume API routes
+
+📄 jobPostingRoutes.js
+   Express routes for job posting endpoints
+   - Maps URLs to controller functions
+   - Supports filtering with query parameters
+   - 9 job posting API routes
+
+═══════════════════════════════════════════════════════════════════
+
+FILE UPLOADS DIRECTORY: /backend/uploads/resumes
+─────────────────────────────────────────────────────────────────
+
+[Auto-created when server starts]
+Stores uploaded PDF/DOC/DOCX files
+Directory structure:
+  uploads/
+  └── resumes/
+      ├── 1710417600000-resume.pdf
+      ├── 1710417601000-john_resume.pdf
+      └── [More uploaded files...]
+
+═══════════════════════════════════════════════════════════════════
+
+DEPENDENCIES: /backend/node_modules (Auto-installed)
+─────────────────────────────────────────────────────────────────
+
+Core Packages:
+  - express@4.18.2       (Web framework)
+  - mongoose@7.0.0       (MongoDB ODM)
+  - multer@1.4.5-lts.1   (File upload)
+  - cors@2.8.5           (Cross-origin requests)
+  - dotenv@16.0.3        (Environment variables)
+
+Plus 109 additional dependency packages
+Total: 114 packages installed
+
+═══════════════════════════════════════════════════════════════════
+
+QUICK FILE REFERENCE
+─────────────────────────────────────────────────────────────────
+
+🚀 TO START SERVER:
+   $ npm start
+   (from /backend directory)
+
+📋 TO VIEW API DOCS:
+   Open: CSE471_Assignment_API_Documentation.txt
+
+🔧 TO TEST APIS:
+   1. Import: Resume_Job_Portal_API.postman_collection.json
+   2. Follow: QUICK_START_GUIDE.txt
+
+📚 FOR PROJECT INFO:
+   - Overview: README.md
+   - Submission Summary: PROJECT_SUBMISSION_SUMMARY.txt
+   - Quick Start: QUICK_START_GUIDE.txt
+
+═══════════════════════════════════════════════════════════════════
+
+FILE SIZES (Approximate)
+─────────────────────────────────────────────────────────────────
+
+Documentation:
+  CSE471_Assignment_API_Documentation.txt .... ~35 KB
+  PROJECT_SUBMISSION_SUMMARY.txt ............ ~13 KB
+  QUICK_START_GUIDE.txt ..................... ~7 KB
+  README.md ............................... ~6 KB
+
+Backend Code:
+  server.js ................................ ~2 KB
+  resumeController.js ..................... ~4 KB
+  jobPostingController.js ................. ~5 KB
+  resumeRoutes.js ......................... ~2 KB
+  jobPostingRoutes.js ..................... ~2 KB
+  Resume.js ............................... ~1 KB
+  JobPosting.js ........................... ~1 KB
+  database.js ............................ ~0.5 KB
+
+Collection & Config:
+  Resume_Job_Portal_API.postman_collection.json .. ~8 KB
+  package.json ........................... ~0.5 KB
+  .env ................................... ~0.1 KB
+
+Node Modules:
+  node_modules .......................... ~75 MB
+
+═══════════════════════════════════════════════════════════════════
+
+WHAT TO SUBMIT FOR ASSIGNMENT
+─────────────────────────────────────────────────────────────────
+
+Required Files:
+
+1. THE /backend FOLDER
+   ✓ Contains all source code
+   ✓ Includes package.json
+   ✓ Includes .env file
+   ✓ Include node_modules (or ask to run npm install)
+
+2. Resume_Job_Portal_API.postman_collection.json
+   ✓ Import in Postman
+   ✓ Test all endpoints
+
+3. CSE471_Assignment_API_Documentation.txt
+   ✓ Main API documentation
+   ✓ Code snippets for ALL 16 APIs
+   ✓ Request/response examples
+
+4. Screenshots from Postman
+   ✓ One screenshot per API endpoint
+   ✓ Show request and response
+   ✓ Paste into assignment document template
+
+Optional Files:
+
+5. README.md
+   - Project overview
+   - Setup instructions
+
+6. QUICK_START_GUIDE.txt
+   - Quick reference for setup
+
+7. PROJECT_SUBMISSION_SUMMARY.txt
+   - Complete project summary
+
+═══════════════════════════════════════════════════════════════════
+
+HOW TO USE THESE FILES
+─────────────────────────────────────────────────────────────────
+
+SCENARIO 1: I want to start the server
+  1. Open terminal
+  2. CD into /backend folder
+  3. Run: npm start
+  4. Server runs on http://localhost:1008
+
+SCENARIO 2: I want to test APIs in Postman
+  1. Open Postman
+  2. Click "Import"
+  3. Select "Resume_Job_Portal_API.postman_collection.json"
+  4. All 16 endpoints are now ready to test
+  5. Follow "QUICK_START_GUIDE.txt" for testing order
+
+SCENARIO 3: I need to understand the APIs
+  1. Read "README.md" for overview
+  2. Read "CSE471_Assignment_API_Documentation.txt" for details
+  3. Look at code snippets in documentation
+  4. Check example requests/responses
+
+SCENARIO 4: I need to modify/customize APIs
+  1. Edit controller files in /backend/controllers/
+  2. Edit route files in /backend/routes/
+  3. Restart server: npm start
+  4. Re-test in Postman
+
+SCENARIO 5: I need to change database
+  1. Edit /backend/.env
+  2. Change MONGODB_URI value
+  3. If using Atlas, paste your connection string
+  4. Restart server: npm start
+
+═══════════════════════════════════════════════════════════════════
+
+KEY FILES FOR REFERENCE
+─────────────────────────────────────────────────────────────────
+
+Code to Review:
+
+API Implementation:
+  ➜ /backend/controllers/resumeController.js
+  ➜ /backend/controllers/jobPostingController.js
+
+Database Models:
+  ➜ /backend/models/Resume.js
+  ➜ /backend/models/JobPosting.js
+
+Routes:
+  ➜ /backend/routes/resumeRoutes.js
+  ➜ /backend/routes/jobPostingRoutes.js
+
+Main Server:
+  ➜ /backend/server.js
+
+Documentation:
+
+API Details:
+  ➜ CSE471_Assignment_API_Documentation.txt
+  ➜ Includes all code snippets
+
+Quick Reference:
+  ➜ README.md
+
+Testing:
+  ➜ Resume_Job_Portal_API.postman_collection.json
+
+Setup:
+  ➜ QUICK_START_GUIDE.txt
+
+═══════════════════════════════════════════════════════════════════
+
+SUMMARY: ALL 16 APIS IMPLEMENTED
+
+Feature 01 - Resume (7 APIs):
+  ✓ Upload          POST   /api/resumes/upload
+  ✓ Parse           POST   /api/resumes/:resumeId/parse
+  ✓ Get             GET    /api/resumes/:resumeId
+  ✓ Get User's      GET    /api/resumes/user/:userId
+  ✓ Update          PUT    /api/resumes/:resumeId
+  ✓ Delete          DELETE /api/resumes/:resumeId
+  ✓ Download        GET    /api/resumes/:resumeId/download
+
+Feature 02 - Job Postal (9 APIs):
+  ✓ Create          POST   /api/jobs/create
+  ✓ Get             GET    /api/jobs/:jobId
+  ✓ Get All         GET    /api/jobs
+  ✓ Get by Employer GET    /api/jobs/employer/:employerId
+  ✓ Update          PUT    /api/jobs/:jobId
+  ✓ Close           PUT    /api/jobs/:jobId/close
+  ✓ Delete          DELETE /api/jobs/:jobId
+  ✓ Search Skills   POST   /api/jobs/search/skills
+  ✓ Apply/Count     PUT    /api/jobs/:jobId/apply
+
+═══════════════════════════════════════════════════════════════════
+
+All files are ready for use. Start with QUICK_START_GUIDE.txt! ✓
+
+═══════════════════════════════════════════════════════════════════

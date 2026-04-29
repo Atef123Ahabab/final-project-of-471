@@ -1,0 +1,11 @@
+.feature-fraud .fraud-user-card,
+.feature-fraud .fraud-job-card,
+.feature-fraud .flagged-user-card,
+.feature-fraud .flagged-job-card {
+	border-top: 4px solid #a04526;
+}
+
+.feature-fraud .flagged-user-card .list-item,
+.feature-fraud .flagged-job-card .list-item {
+	background: linear-gradient(180deg, #fffdf8, #fdf2ee);
+}

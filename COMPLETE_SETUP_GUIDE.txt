@@ -1,0 +1,579 @@
+COMPLETE SETUP & EXECUTION GUIDE
+═══════════════════════════════════════════════════════════════════
+
+This guide shows exact commands and expected output
+
+═══════════════════════════════════════════════════════════════════
+
+PART 1: VERIFY PREREQUISITES
+─────────────────────────────────────────────────────────────────
+
+Check Node.js:
+  $ node --version
+  Expected: v14.0.0 or higher (e.g., v20.10.0)
+
+Check npm:
+  $ npm --version
+  Expected: 6.0.0 or higher (e.g., 10.2.0)
+
+Check MongoDB (must be running):
+  $ mongosh
+  OR
+  $ mongo
+  Expected: Successfully connects to MongoDB shell
+
+═══════════════════════════════════════════════════════════════════
+
+PART 2: PROJECT SETUP
+─────────────────────────────────────────────────────────────────
+
+Navigate to project:
+  $ cd "/Users/atefahabab/Desktop/471 2 features"
+  $ cd backend
+
+Verify you're in correct location:
+  $ pwd
+  Expected output: /Users/atefahabab/Desktop/471 2 features/backend
+
+List files to confirm:
+  $ ls -la
+  Expected files:
+    - server.js
+    - package.json
+    - .env
+    - .gitignore
+    - node_modules/ (already exists - skip npm install)
+    - config/
+    - controllers/
+    - models/
+    - routes/
+    - uploads/
+
+═══════════════════════════════════════════════════════════════════
+
+PART 3: NPM DEPENDENCIES (Already Installed!)
+─────────────────────────────────────────────────────────────────
+
+Dependencies are already installed (node_modules exists).
+
+If needed, reinstall with:
+  $ npm install
+
+Expected output:
+  npm warn deprecated multer@1.4.5-lts.2: ...
+  added 114 packages in 1s
+  19 packages are looking for funding
+  found 0 vulnerabilities
+
+═══════════════════════════════════════════════════════════════════
+
+PART 4: VERIFY DATABASE CONNECTION
+─────────────────────────────────────────────────────────────────
+
+Option A - Local MongoDB (Default):
+  Start MongoDB in a separate terminal:
+    macOS: brew services start mongodb-community
+    Windows: Services → Find MongoDB → Start
+    Linux: sudo systemctl start mongod
+
+  Test connection from project:
+    $ mongosh
+    Expected: Connected to mongodb://localhost:27017/
+
+Option B - MongoDB Atlas (Cloud):
+  1. Go to https://mongodb.com/cloud/atlas
+  2. Create account and cluster
+  3. Get connection string
+  4. Edit /backend/.env:
+       MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/resume-job-portal
+  5. Save file
+
+═══════════════════════════════════════════════════════════════════
+
+PART 5: START THE SERVER
+─────────────────────────────────────────────────────────────────
+
+From /backend directory, run:
+  $ npm start
+
+Expected Output:
+
+  ==========================================
+  Server started successfully!
+  Port: 1008
+  URL: http://localhost:1008
+  ==========================================
+
+  Available Endpoints:
+    - GET  http://localhost:1008/api/health
+    - POST http://localhost:1008/api/resumes/upload
+    - GET  http://localhost:1008/api/resumes/:resumeId
+    - POST http://localhost:1008/api/jobs/create
+    - GET  http://localhost:1008/api/jobs
+
+Server is now running! Terminal will show this message.
+
+Press Ctrl+C to stop server.
+
+═══════════════════════════════════════════════════════════════════
+
+PART 6: VERIFY SERVER IS RUNNING
+─────────────────────────────────────────────────────────────────
+
+Open new terminal window (keep server running in first terminal).
+
+Test 1 - Health Check:
+  $ curl http://localhost:1008/api/health
+
+Expected Response:
+  {
+    "success": true,
+    "message": "Server is running",
+    "timestamp": "2024-03-14T10:30:00.000Z",
+    "port": 1008
+  }
+
+Test 2 - Root Endpoint:
+  $ curl http://localhost:1008
+
+Expected Response:
+  {
+    "success": true,
+    "message": "Resume & Job Portal API",
+    "version": "1.0.0",
+    "endpoints": {
+      "health": "/api/health",
+      "resumes": "/api/resumes",
+      "jobs": "/api/jobs"
+    }
+  }
+
+═══════════════════════════════════════════════════════════════════
+
+PART 7: IMPORT POSTMAN COLLECTION
+─────────────────────────────────────────────────────────────────
+
+With server running, open Postman:
+
+Steps:
+  1. Click "Import" button (top left)
+  2. Select file "Resume_Job_Portal_API.postman_collection.json"
+  3. Click "Import"
+
+Expected result:
+  - New collection "Resume & Job Portal API" appears
+  - Organized into 2 folders:
+    ├── FEATURE 01: Resume Upload & Parsing (7 endpoints)
+    └── FEATURE 02: Job Posting & Management (9 endpoints)
+  - 16 total endpoints listed
+
+═══════════════════════════════════════════════════════════════════
+
+PART 8: TEST RESUME APIS (Feature 01)
+─────────────────────────────────────────────────────────────────
+
+Test 1.1 - Upload Resume:
+  Method: POST
+  URL: http://localhost:1008/api/resumes/upload
+  Body Type: form-data
+  Parameters:
+    - resume: [Select a PDF file]
+    - userId: user-001
+    - fullName: John Doe
+    - email: john@example.com
+    - phone: +1-555-0123
+
+Expected Response (201):
+  {
+    "success": true,
+    "message": "Resume uploaded successfully",
+    "data": {
+      "resumeId": "507f1f77bcf86cd799439011",
+      "fileName": "your_file.pdf",
+      "uploadedAt": "2024-03-14T10:30:00.000Z"
+    }
+  }
+
+IMPORTANT: Copy the resumeId from response!
+
+─────────────────────────────────────────────────────────────────
+
+Test 1.2 - Parse Resume:
+  Method: POST
+  URL: http://localhost:1008/api/resumes/507f1f77bcf86cd799439011/parse
+  Body Type: raw JSON
+  Body:
+  {
+    "skills": ["JavaScript", "Node.js", "MongoDB"],
+    "experience": [
+      {
+        "jobTitle": "Senior Developer",
+        "company": "Tech Corp",
+        "duration": "2 years",
+        "description": "Led API development"
+      }
+    ],
+    "education": [
+      {
+        "degree": "Bachelor's in CS",
+        "institution": "Tech University",
+        "year": "2020"
+      }
+    ],
+    "summary": "Experienced full-stack developer"
+  }
+
+Expected Response (200):
+  {
+    "success": true,
+    "message": "Resume parsed successfully",
+    "data": {
+      "resumeId": "507f1f77bcf86cd799439011",
+      "skills": ["JavaScript", "Node.js", "MongoDB"],
+      "experience": [...],
+      "education": [...]
+    }
+  }
+
+─────────────────────────────────────────────────────────────────
+
+Test 1.3 - Get Resume:
+  Method: GET
+  URL: http://localhost:1008/api/resumes/507f1f77bcf86cd799439011
+  Body: None
+
+Expected Response (200):
+  {
+    "success": true,
+    "data": {
+      "_id": "507f1f77bcf86cd799439011",
+      "userId": "user-001",
+      "fileName": "your_file.pdf",
+      "skills": ["JavaScript", "Node.js", "MongoDB"],
+      "experience": [...],
+      "uploadedAt": "2024-03-14T10:30:00.000Z"
+    }
+  }
+
+─────────────────────────────────────────────────────────────────
+
+Test 1.4 - Get All User Resumes:
+  Method: GET
+  URL: http://localhost:1008/api/resumes/user/user-001
+  Body: None
+
+Expected Response (200):
+  {
+    "success": true,
+    "count": 1,
+    "data": [
+      {
+        "_id": "507f1f77bcf86cd799439011",
+        "fileName": "your_file.pdf",
+        ...
+      }
+    ]
+  }
+
+─────────────────────────────────────────────────────────────────
+
+Test 1.5 - Update Resume:
+  Method: PUT
+  URL: http://localhost:1008/api/resumes/507f1f77bcf86cd799439011
+  Body Type: raw JSON
+  Body:
+  {
+    "skills": ["JavaScript", "Node.js", "MongoDB", "Express"],
+    "fullName": "John Doe",
+    "email": "john.updated@example.com"
+  }
+
+Expected Response (200):
+  {
+    "success": true,
+    "message": "Resume updated successfully",
+    "data": { ...updated resume... }
+  }
+
+─────────────────────────────────────────────────────────────────
+
+Test 1.6 - Download Resume:
+  Method: GET
+  URL: http://localhost:1008/api/resumes/507f1f77bcf86cd799439011/download
+  Body: None
+
+Expected Response: File will download
+
+─────────────────────────────────────────────────────────────────
+
+Test 1.7 - Delete Resume:
+  Method: DELETE
+  URL: http://localhost:1008/api/resumes/507f1f77bcf86cd799439011
+  Body: None
+
+Expected Response (200):
+  {
+    "success": true,
+    "message": "Resume deleted successfully"
+  }
+
+═══════════════════════════════════════════════════════════════════
+
+PART 9: TEST JOB POSTING APIS (Feature 02)
+─────────────────────────────────────────────────────────────────
+
+Test 2.1 - Create Job Posting:
+  Method: POST
+  URL: http://localhost:1008/api/jobs/create
+  Body Type: raw JSON
+  Body:
+  {
+    "employerId": "employer-001",
+    "jobTitle": "Senior Full-Stack Developer",
+    "description": "Looking for experienced full-stack developer with at least 4 years of experience",
+    "requiredSkills": ["JavaScript", "Node.js", "React", "MongoDB"],
+    "qualifications": [
+      "Bachelor's degree in CS",
+      "4+ years dev experience",
+      "Experience with REST APIs"
+    ],
+    "location": "San Francisco, CA",
+    "salary": {
+      "min": 120000,
+      "max": 180000,
+      "currency": "USD"
+    },
+    "jobType": "Full-Time",
+    "experience": {
+      "min": 4,
+      "max": 8
+    },
+    "deadline": "2024-04-30"
+  }
+
+Expected Response (201):
+  {
+    "success": true,
+    "message": "Job posting created successfully",
+    "data": {
+      "jobId": "507f1f77bcf86cd799439012",
+      "jobTitle": "Senior Full-Stack Developer",
+      "status": "Open",
+      "createdAt": "2024-03-14T10:30:00.000Z"
+    }
+  }
+
+IMPORTANT: Copy the jobId from response!
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.2 - Get Job by ID:
+  Method: GET
+  URL: http://localhost:1008/api/jobs/507f1f77bcf86cd799439012
+  Body: None
+
+Expected Response (200): Job posting details
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.3 - Get All Jobs:
+  Method: GET
+  URL: http://localhost:1008/api/jobs?status=Open&jobType=Full-Time
+  Body: None
+
+Expected Response (200): Array of job postings
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.4 - Get Employer's Jobs:
+  Method: GET
+  URL: http://localhost:1008/api/jobs/employer/employer-001
+  Body: None
+
+Expected Response (200): Array of jobs for that employer
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.5 - Update Job:
+  Method: PUT
+  URL: http://localhost:1008/api/jobs/507f1f77bcf86cd799439012
+  Body Type: raw JSON
+  Body:
+  {
+    "jobTitle": "Senior Full-Stack Developer (Updated)",
+    "requiredSkills": ["JavaScript", "Node.js", "React", "MongoDB", "Docker"]
+  }
+
+Expected Response (200): Updated job data
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.6 - Apply to Job (Increment):
+  Method: PUT
+  URL: http://localhost:1008/api/jobs/507f1f77bcf86cd799439012/apply
+  Body: None
+
+Expected Response (200):
+  {
+    "success": true,
+    "message": "Application recorded successfully",
+    "data": {
+      "jobId": "507f1f77bcf86cd799439012",
+      "applicantsCount": 1
+    }
+  }
+
+Run multiple times to increment applicants count.
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.7 - Search Jobs by Skills:
+  Method: POST
+  URL: http://localhost:1008/api/jobs/search/skills
+  Body Type: raw JSON
+  Body:
+  {
+    "skills": ["JavaScript", "Node.js"]
+  }
+
+Expected Response (200): Jobs matching those skills
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.8 - Close Job:
+  Method: PUT
+  URL: http://localhost:1008/api/jobs/507f1f77bcf86cd799439012/close
+  Body: None
+
+Expected Response (200):
+  {
+    "success": true,
+    "message": "Job posting closed successfully",
+    "data": { status: "Closed", ... }
+  }
+
+─────────────────────────────────────────────────────────────────
+
+Test 2.9 - Delete Job:
+  Method: DELETE
+  URL: http://localhost:1008/api/jobs/507f1f77bcf86cd799439012
+  Body: None
+
+Expected Response (200):
+  {
+    "success": true,
+    "message": "Job posting deleted successfully"
+  }
+
+═══════════════════════════════════════════════════════════════════
+
+TAKING SCREENSHOTS FOR ASSIGNMENT
+─────────────────────────────────────────────────────────────────
+
+For each API, take a screenshot showing:
+
+1. Endpoint URL (visible in address bar)
+2. HTTP Method (visible in dropdown)
+3. Headers (if any, visible in Headers tab)
+4. Request Body (visible in Body tab)
+5. Response Status Code (visible at top)
+6. Response Body (visible in response panel)
+
+Steps in Postman:
+  1. Click on endpoint
+  2. Enter any required data
+  3. Click "Send"
+  4. Wait for response
+  5. Press Command+Shift+3 (Mac) or Shift+PrintScreen (Windows)
+  6. Crop to show request and response
+  7. Save as PNG
+
+Repeat for all 16 endpoints.
+
+═══════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING DURING EXECUTION
+─────────────────────────────────────────────────────────────────
+
+Problem: "Cannot GET /api/resumes"
+Fix:
+  - Verify server is running (look for success message)
+  - Check URL is exactly correct
+  - Verify port 1008 in URL
+
+Problem: "MongoDB connection failed"
+Fix:
+  - Start MongoDB: mongod (Mac) or via Services (Windows)
+  - Or update .env with correct connection string
+
+Problem: "Port 1008 already in use"
+Fix:
+  - Change port in .env file
+  - Or kill existing process
+
+Problem: "File upload returns 400"
+Fix:
+  - Use form-data, not raw JSON
+  - Select file from computer
+  - Check file is PDF/DOC/DOCX
+
+Problem: "404 Not Found"
+Fix:
+  - Check exact endpoint spelling
+  - Verify HTTP method (POST vs GET)
+  - Check resource ID exists
+
+Problem: "500 Internal Server Error"
+Fix:
+  - Check server console for error message
+  - Verify request body JSON is valid
+  - Check MongoDB is running
+
+═══════════════════════════════════════════════════════════════════
+
+FINAL CHECKLIST BEFORE SUBMISSION
+─────────────────────────────────────────────────────────────────
+
+Server:
+  ☐ npm start runs without errors
+  ☐ Server shows "Server started successfully!"
+  ☐ Shows "Port: 1008"
+  ☐ Health check endpoint works
+
+Resumes (Feature 01):
+  ☐ Upload works (returns resumeId)
+  ☐ Parse stores data
+  ☐ Get retrieves correct resume
+  ☐ Get user's resumes works
+  ☐ Update modifies data
+  ☐ Download returns file
+  ☐ Delete removes from database
+
+Jobs (Feature 02):
+  ☐ Create works (returns jobId)
+  ☐ Get retrieves correct job
+  ☐ Get all with filters works
+  ☐ Get employer's jobs works
+  ☐ Update modifies data
+  ☐ Apply increments counter
+  ☐ Search by skills returns matches
+  ☐ Close changes status to "Closed"
+  ☐ Delete removes from database
+
+Documentation:
+  ☐ All 16 endpoints documented
+  ☐ Code snippets included
+  ☐ Examples provided
+  ☐ Postman collection ready
+
+Testing:
+  ☐ All tests pass in Postman
+  ☐ Screenshots captured for all APIs
+  ☐ Response status codes correct
+  ☐ Error handling tested
+
+═══════════════════════════════════════════════════════════════════
+
+You're ready! Start with: npm start ✓
+
+═══════════════════════════════════════════════════════════════════

@@ -1,0 +1,258 @@
+/* My Applications Page */
+
+.feature-my-applications {
+  gap: 20px;
+}
+
+.my-applications-header-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-top: 4px solid #1f5f3f;
+}
+
+.my-applications-header-card h2 {
+  margin: 0 0 8px 0;
+}
+
+.my-applications-subtitle {
+  margin: 0;
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.my-applications-header-card button {
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+/* Statistics Card */
+.my-applications-stats-card {
+  background: linear-gradient(180deg, #fffdf8, #f2f7fc);
+}
+
+.my-applications-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.my-applications-stat-item {
+  text-align: center;
+  padding: 16px 12px;
+  border-radius: 8px;
+  background: rgba(31, 95, 63, 0.05);
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.my-applications-stat-item:hover {
+  background: rgba(31, 95, 63, 0.1);
+  border-color: #1f5f3f;
+  transform: translateY(-2px);
+}
+
+.my-applications-stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #1f5f3f;
+  margin-bottom: 4px;
+}
+
+.my-applications-stat-label {
+  font-size: 0.85rem;
+  color: #5d675f;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Controls Card */
+.my-applications-controls-card {
+  background: linear-gradient(180deg, #fffdf8, #f2f7fc);
+}
+
+.my-applications-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.my-applications-controls > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.my-applications-controls label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #142117;
+}
+
+.my-applications-controls select {
+  padding: 10px 12px;
+  border: 1px solid #d5d5c8;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* Applications List */
+.my-applications-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.my-applications-item-card {
+  border-left: 4px solid #5d675f;
+  background: linear-gradient(180deg, #fffdf8, #f2f7fc);
+  transition: all 0.2s ease;
+}
+
+.my-applications-item-card:hover {
+  box-shadow: 0 8px 16px rgba(20, 33, 23, 0.12);
+  transform: translateY(-2px);
+}
+
+.my-applications-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.my-applications-item-title h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.1rem;
+  color: #142117;
+}
+
+.my-applications-item-company {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.my-applications-item-status {
+  flex-shrink: 0;
+  margin-left: 16px;
+}
+
+.my-applications-status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* Item Details */
+.my-applications-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.my-applications-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  font-size: 0.95rem;
+}
+
+.my-applications-detail-label {
+  font-weight: 600;
+  color: #5d675f;
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.my-applications-detail-value {
+  color: #142117;
+  flex: 1;
+  text-align: right;
+}
+
+.my-applications-detail-value em {
+  color: #5d675f;
+  font-style: italic;
+}
+
+/* Item Footer */
+.my-applications-item-footer {
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.my-applications-item-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Empty State */
+.my-applications-empty-card {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(180deg, #fffdf8, #f2f7fc);
+}
+
+.my-applications-empty-message {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .my-applications-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-applications-item-status {
+    margin-left: 0;
+    margin-top: 12px;
+  }
+
+  .my-applications-detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .my-applications-detail-value {
+    text-align: left;
+  }
+
+  .my-applications-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .my-applications-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .my-applications-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .my-applications-header-card {
+    flex-direction: column;
+  }
+
+  .my-applications-header-card button {
+    margin-left: 0;
+    margin-top: 12px;
+    width: 100%;
+  }
+}

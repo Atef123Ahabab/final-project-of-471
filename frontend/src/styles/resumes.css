@@ -1,0 +1,13 @@
+.feature-resumes .resume-upload-card,
+.feature-resumes .resume-list-card,
+.feature-resumes .resume-parse-card {
+	border-top: 4px solid #1f7a52;
+}
+
+.feature-resumes .resume-upload-card {
+	background: linear-gradient(180deg, #fffdf8, #f2fbf6);
+}
+
+.feature-resumes .resume-list-card .list-item {
+	background: linear-gradient(180deg, #fffdf8, #f3faf6);
+}

@@ -1,0 +1,8 @@
+.feature-audit .audit-filter-card,
+.feature-audit .audit-log-card {
+	border-top: 4px solid #4f5e6c;
+}
+
+.feature-audit .audit-log-card {
+	background: linear-gradient(180deg, #fffdf8, #f4f7fa);
+}

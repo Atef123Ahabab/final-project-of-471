@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume & Job Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:opsz@9..40&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f6efe6;
+      --bg-soft: #fff9f2;
+      --ink: #1f1712;
+      --muted: #6c5947;
+      --panel: rgba(255, 255, 255, 0.82);
+      --line: #e5d4c3;
+      --brand: #0f8f7b;
+      --brand-2: #ef6a3d;
+      --danger: #b42318;
+      --ok: #1a7f37;
+      --shadow: 0 16px 44px rgba(84, 48, 17, 0.12);
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #ffffff 0%, transparent 26%),
+        radial-gradient(circle at 90% 10%, #ffe0bc 0%, transparent 26%),
+        linear-gradient(135deg, var(--bg-soft), var(--bg));
+      min-height: 100vh;
+    }
+
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.12;
+      background-image: radial-gradient(#000 0.45px, transparent 0.45px);
+      background-size: 4px 4px;
+    }
+
+    .layout {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 18px 18px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 12px;
+      z-index: 30;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-family: "DM Serif Display", serif;
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .brand span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav a:hover {
+      transform: translateY(-1px);
+      border-color: var(--brand);
+    }
+
+    .hero {
+      background: linear-gradient(120deg, rgba(255,255,255,0.9), rgba(255,248,239,0.86));
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      display: grid;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    h1, h2 {
+      font-family: "DM Serif Display", serif;
+      font-weight: 400;
+    }
+
+    h1 { font-size: clamp(32px, 4vw, 56px); line-height: 1; }
+
+    .hero p {
+      max-width: 860px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .overview {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .overview-card {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .overview-card h3 {
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .overview-card p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #4d3d2e;
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .panel {
+      grid-column: span 12;
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .feature-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .feature-side {
+      background: linear-gradient(180deg, rgba(15, 143, 123, 0.08), rgba(255, 255, 255, 0.92));
+      border: 1px solid #d8e8e3;
+      border-radius: 18px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      height: 100%;
+    }
+
+    .feature-side h3 {
+      font-size: 16px;
+      line-height: 1.15;
+    }
+
+    .feature-side p,
+    .feature-side li {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .feature-side ul {
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .feature-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: end;
+      margin-bottom: 14px;
+    }
+
+    .feature-title p {
+      color: var(--muted);
+      margin-top: 4px;
+      font-size: 13px;
+    }
+
+    .split-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .split-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+
+    .field { display: grid; gap: 6px; margin-bottom: 12px; }
+
+    label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #5a4738;
+      font-weight: 700;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #d7c6b6;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--ink);
+      padding: 11px 12px;
+      font: inherit;
+      font-size: 14px;
+    }
+
+    textarea { min-height: 92px; resize: vertical; }
+
+    input:focus, textarea:focus, select:focus {
+      outline: 2px solid rgba(15, 143, 123, 0.16);
+      border-color: var(--brand);
+    }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 13px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .btn-brand { background: var(--brand); color: #fff; }
+    .btn-accent { background: var(--brand-2); color: #fff; }
+    .btn-ghost { background: #fff; color: #3e2f24; border: 1px solid #d7c6b6; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-soft { background: #f6eee6; color: #4a3a2c; border: 1px solid #e2d3c4; }
+
+    .list {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .item {
+      background: #fff;
+      border: 1px solid #e2d2c2;
+      border-radius: 14px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .title { font-weight: 700; font-size: 15px; }
+    .meta { font-size: 12px; color: #5f4f40; line-height: 1.5; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tag {
+      font-size: 11px;
+      border: 1px solid #dbcbbd;
+      background: #fbf5ef;
+      border-radius: 999px;
+      padding: 4px 8px;
+      color: #4a3a2e;
+    }
+
+    .status {
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid #d8c9bb;
+      background: #f8f1e9;
+      color: #584839;
+    }
+
+    .status-open { background: #e8fbf4; color: #0b6a53; border-color: #c8eee2; }
+    .status-closed { background: #ffeceb; color: #8f1e28; border-color: #f2c3c7; }
+    .status-shortlisted { background: #eaf4ff; color: #0d4e92; border-color: #c3def7; }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 40;
+      min-width: 250px;
+      max-width: 360px;
+      background: #fff;
+      border: 1px solid #e4d3c4;
+      border-left: 5px solid var(--brand);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 10px 12px;
+      color: #3f3024;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { border-left-color: var(--danger); }
+
+    .section-spacer { height: 8px; }
+
+    @media (max-width: 1100px) {
+      .split-2, .split-3 { grid-template-columns: 1fr; }
+      .overview,
+      .feature-wrap { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .topbar { top: 0; border-radius: 0 0 18px 18px; }
+      .nav a { font-size: 12px; padding: 9px 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+
+  <div class="layout">
+    <header class="topbar">
+      <div class="brand">
+        <strong>Resume & Job Portal</strong>
+        <span id="healthText">Checking API status...</span>
+      </div>
+      <nav class="nav" aria-label="Feature navigation">
+        <a href="#home">Home</a>
+        <a href="#resume-feature">Resume Upload & Parsing</a>
+        <a href="#job-feature">Job Posting & Management</a>
+        <a href="#application-feature">Job Application System</a>
+        <a href="#shortlist-feature">Candidate Shortlisting</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="home">
+      <p class="eyebrow">Live Project Frontend</p>
+      <h1>All assignment features, separated and reachable from the navbar.</h1>
+      <p>
+        This interface keeps the project organized into named feature blocks so each workflow can be opened from the
+        website navigation and tested independently against the running backend.
+      </p>
+      <div class="pills">
+        <span class="pill">Running at http://localhost:1008/</span>
+        <span class="pill">API base: /api</span>
+        <span class="pill">Resume upload</span>
+        <span class="pill">Job apply with resume</span>
+        <span class="pill">Shortlist management</span>
+      </div>
+    </section>
+
+    <section class="overview" aria-label="Feature guide">
+      <div class="overview-card">
+        <h3>Feature 01</h3>
+        <p>Upload resumes, then auto-parse extracted skills and experience into the backend.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Feature 02</h3>
+        <p>Create, edit, search, and close job postings with required skills and qualifications.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Feature 03</h3>
+        <p>Apply to an open job directly from the website and attach an uploaded resume.</p>
+      </div>
+      <div class="overview-card">
+        <h3>Feature 04</h3>
+        <p>Review applicants, shortlist candidates, and remove them from shortlist status.</p>
+      </div>
+    </section>
+
+    <section class="section" id="resume-feature">
+      <article class="panel">
+        <div class="feature-title">
+          <div>
+            <h2>Feature 01: Resume Upload & Parsing</h2>
+            <p>Upload a PDF/DOC file, then extract skills and experience into the backend record.</p>
+          </div>
+        </div>
+
+        <div class="feature-wrap">
+          <div>
+            <div class="field">
+              <label for="resumeUserId">User ID</label>
+              <input id="resumeUserId" value="u-1" />
+            </div>
+            <div class="field">
+              <label for="resumeName">Full Name</label>
+              <input id="resumeName" value="John Doe" />
+            </div>
+            <div class="field">
+              <label for="resumeEmail">Email</label>
+              <input id="resumeEmail" type="email" value="john@example.com" />
+            </div>
+            <div class="field">
+              <label for="resumePhone">Phone</label>
+              <input id="resumePhone" value="01700000000" />
+            </div>
+            <div class="field">
+              <label for="resumeFile">Resume File</label>
+              <input id="resumeFile" type="file" accept=".pdf,.doc,.docx,.txt,.rtf" />
+            </div>
+            <div class="actions">
+              <button class="btn-brand" id="uploadParseBtn">Upload & Auto Parse</button>
+              <button class="btn-ghost" id="loadResumeBtn">Refresh Resumes</button>
+            </div>
+          </div>
+
+          <div class="feature-side">
+            <h3>What this front end does</h3>
+            <p>This area is dedicated to the resume workflow. Users upload their file, then the page sends the file to the backend and stores parsed details.</p>
+            <ul>
+              <li>Connects to <strong>POST /api/resumes/upload</strong></li>
+              <li>Connects to <strong>POST /api/resumes/:resumeId/parse</strong></li>
+              <li>Shows saved resumes for the selected user</li>
+              <li>Displays extracted skills beside the upload form</li>
+            </ul>
+            <div class="field">
+              <label for="resumeNotes">Auto Parsed Skills / Experience Notes</label>
+              <textarea id="resumeNotes" placeholder="Upload a text-based resume to extract skills automatically."></textarea>
+            </div>
+            <div class="field">
+              <label>Stored Resumes</label>
+              <div class="list" id="resumeList"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="job-feature">
+      <article class="panel">
+        <div class="feature-title">
+          <div>
+            <h2>Feature 02: Job Posting & Management</h2>
+            <p>Create, edit, search, and close job postings with required skills and qualifications.</p>
+          </div>
+        </div>
+
+        <div class="feature-wrap">
+          <div>
+            <div class="field">
+              <label for="jobEmployerId">Employer ID</label>
+              <input id="jobEmployerId" value="employer-001" />
+            </div>
+            <div class="field">
+              <label for="jobTitle">Job Title</label>
+              <input id="jobTitle" placeholder="Senior Backend Engineer" />
+            </div>
+            <div class="field">
+              <label for="jobDescription">Description</label>
+              <textarea id="jobDescription" placeholder="Describe the role, responsibilities, and expectations."></textarea>
+            </div>
+            <div class="actions">
+              <button class="btn-accent" id="createJobBtn">Create Job Posting</button>
+              <button class="btn-ghost" id="loadJobBtn">Refresh Jobs</button>
+            </div>
+          </div>
+
+          <div class="feature-side">
+            <h3>What this front end does</h3>
+            <p>This panel handles the employer workflow. Jobs can be created, edited, refreshed, and closed from one visible area.</p>
+            <ul>
+              <li>Connects to <strong>POST /api/jobs/create</strong></li>
+              <li>Connects to <strong>PUT /api/jobs/:jobId</strong></li>
+              <li>Connects to <strong>PUT /api/jobs/:jobId/close</strong></li>
+              <li>Lets employers review all posted jobs beside the form</li>
+            </ul>
+            <div class="split-2">
+              <div class="field">
+                <label for="jobLocation">Location</label>
+                <input id="jobLocation" placeholder="Dhaka, Bangladesh" />
+              </div>
+              <div class="field">
+                <label for="jobType">Job Type</label>
+                <select id="jobType">
+                  <option>Full-Time</option>
+                  <option>Part-Time</option>
+                  <option>Contract</option>
+                  <option>Internship</option>
+                </select>
+              </div>
+            </div>
+            <div class="split-2">
+              <div class="field">
+                <label for="jobSkills">Required Skills</label>
+                <input id="jobSkills" placeholder="Node.js, MongoDB, REST API" />
+              </div>
+              <div class="field">
+                <label for="jobQuals">Qualifications</label>
+                <input id="jobQuals" placeholder="BSc in CSE, 2+ years exp" />
+              </div>
+            </div>
+            <div class="field">
+              <label>All Jobs</label>
+              <div class="list" id="jobList"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="application-feature">
+      <article class="panel">
+        <div class="feature-title">
+          <div>
+            <h2>Feature 03: Job Application System</h2>
+            <p>Apply directly to a job and attach one of the uploaded resumes.</p>
+          </div>
+        </div>
+
+        <div class="feature-wrap">
+          <div>
+            <div class="field">
+              <label for="applyJobId">Open Job</label>
+              <select id="applyJobId"></select>
+            </div>
+            <div class="field">
+              <label for="applyResumeId">Attach Resume</label>
+              <select id="applyResumeId"></select>
+            </div>
+            <div class="split-2">
+              <div class="field">
+                <label for="applyApplicantId">Applicant ID</label>
+                <input id="applyApplicantId" value="u-1" />
+              </div>
+              <div class="field">
+                <label for="applyName">Full Name</label>
+                <input id="applyName" value="John Doe" />
+              </div>
+            </div>
+            <div class="split-2">
+              <div class="field">
+                <label for="applyEmail">Email</label>
+                <input id="applyEmail" type="email" value="john@example.com" />
+              </div>
+              <div class="field">
+                <label for="applyPhone">Phone</label>
+                <input id="applyPhone" value="01700000000" />
+              </div>
+            </div>
+            <div class="split-2">
+              <div class="field">
+                <label for="applyCity">City</label>
+                <input id="applyCity" value="Dhaka" />
+              </div>
+              <div class="field">
+                <label for="applyCountry">Country</label>
+                <input id="applyCountry" value="Bangladesh" />
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn-brand" id="applyBtn">Submit Application</button>
+            </div>
+          </div>
+
+          <div class="feature-side">
+            <h3>What this front end does</h3>
+            <p>This section is for candidates. They choose an open job, attach a stored resume, and submit the application in one step.</p>
+            <ul>
+              <li>Connects to <strong>PUT /api/jobs/:jobId/apply</strong></li>
+              <li>Requires a selected resume before submission</li>
+              <li>Shows a preview of how the application payload is sent</li>
+              <li>Feeds the shortlist panel below</li>
+            </ul>
+            <div class="field">
+              <label>Application Preview</label>
+              <div class="item">
+                <div class="meta">This panel sends PUT /api/jobs/:jobId/apply with resume attachment details and applicant data.</div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Open Job Applications</label>
+              <div class="item">
+                <div class="meta">Switch to Candidate Shortlisting to inspect and manage applications for any job.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="shortlist-feature">
+      <article class="panel">
+        <div class="feature-title">
+          <div>
+            <h2>Feature 04: Candidate Shortlisting</h2>
+            <p>Filter candidates by status, shortlist them, and remove them from the shortlist if needed.</p>
+          </div>
+        </div>
+
+        <div class="feature-wrap">
+          <div>
+            <div class="split-3">
+              <div class="field">
+                <label for="shortlistJobId">Job</label>
+                <select id="shortlistJobId"></select>
+              </div>
+              <div class="field">
+                <label for="shortlistFilter">Filter</label>
+                <select id="shortlistFilter">
+                  <option value="all">All</option>
+                  <option value="not_shortlisted">Not Shortlisted</option>
+                  <option value="Shortlisted">Shortlisted</option>
+                  <option value="Under Review">Under Review</option>
+                  <option value="Rejected">Rejected</option>
+                  <option value="Accepted">Accepted</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>&nbsp;</label>
+                <div class="actions" style="margin-top: 0;">
+                  <button class="btn-ghost" id="loadApplicationsBtn">Load Candidates</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Candidate List</label>
+              <div class="list" id="applicationList"></div>
+            </div>
+          </div>
+
+          <div class="feature-side">
+            <h3>What this front end does</h3>
+            <p>This part is for employers reviewing applicants. It shows job candidates, status filters, and one-click shortlisting actions.</p>
+            <ul>
+              <li>Connects to <strong>GET /api/jobs/:jobId/applications</strong></li>
+              <li>Connects to <strong>PUT /api/jobs/applications/:applicationId/status</strong></li>
+              <li>Supports shortlist and remove-shortlist actions</li>
+              <li>Shows filtered candidate views beside the controls</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API = `${window.location.origin}/api`;
+
+    const state = {
+      resumes: [],
+      jobs: [],
+      applications: [],
+    };
+
+    const dom = {
+      toast: document.getElementById('toast'),
+      healthText: document.getElementById('healthText'),
+      resumeList: document.getElementById('resumeList'),
+      jobList: document.getElementById('jobList'),
+      applicationList: document.getElementById('applicationList'),
+      applyJobId: document.getElementById('applyJobId'),
+      applyResumeId: document.getElementById('applyResumeId'),
+      shortlistJobId: document.getElementById('shortlistJobId'),
+    };
+
+    function toast(message, isError = false) {
+      dom.toast.textContent = message;
+      dom.toast.className = `toast show${isError ? ' error' : ''}`;
+      window.clearTimeout(toast.timer);
+      toast.timer = window.setTimeout(() => {
+        dom.toast.className = 'toast';
+      }, 3000);
+    }
+
+    async function request(path, options = {}) {
+      const response = await fetch(`${API}${path}`, options);
+      const data = await response.json();
+      if (!response.ok || data.success === false) {
+        throw new Error(data.message || 'Request failed');
+      }
+      return data;
+    }
+
+    function parseCommaList(value) {
+      return String(value || '')
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
+    }
+
+    function optionsMarkup(items, valueKey, labelFn, placeholder) {
+      if (!items.length) {
+        return `<option value="">${placeholder}</option>`;
+      }
+
+      return items
+        .map((item) => `<option value="${item[valueKey]}">${labelFn(item)}</option>`)
+        .join('');
+    }
+
+    function textExtraction(fileText) {
+      const catalog = {
+        JavaScript: /javascript|js/i,
+        TypeScript: /typescript|ts/i,
+        React: /react/i,
+        NodeJs: /node\.js|node js|node/i,
+        MongoDB: /mongodb|mongo/i,
+        SQL: /\bsql\b/i,
+        Python: /python/i,
+        Docker: /docker/i,
+        Git: /\bgit\b/i,
+        AWS: /aws/i,
+        Express: /express/i,
+      };
+
+      const skills = Object.entries(catalog)
+        .filter(([, regex]) => regex.test(fileText))
+        .map(([name]) => name.replace('NodeJs', 'Node.js'));
+
+      const yearsMatch = fileText.match(/(\d+)\+?\s*(years|yrs|year)/i);
+      const experience = yearsMatch
+        ? [{ jobTitle: 'Auto extracted role', company: 'Resume Upload', duration: `${yearsMatch[1]}+ years`, description: 'Generated from resume text' }]
+        : [];
+
+      return {
+        skills: [...new Set(skills)],
+        experience,
+        summary: skills.length ? `Auto extracted ${skills.length} skills from the resume text.` : 'Resume uploaded successfully.',
+      };
+    }
+
+    async function readTextIfPossible(file) {
+      const name = file.name.toLowerCase();
+      const canRead = name.endsWith('.txt') || name.endsWith('.md') || file.type.includes('text');
+      if (!canRead) return '';
+
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ''));
+        reader.onerror = () => reject(new Error('Unable to read file text'));
+        reader.readAsText(file);
+      });
+    }
+
+    async function loadResumes() {
+      const userId = document.getElementById('resumeUserId').value.trim() || 'u-1';
+      const result = await request(`/resumes/user/${encodeURIComponent(userId)}`);
+      state.resumes = result.data || [];
+
+      dom.resumeList.innerHTML = state.resumes.length
+        ? state.resumes.map((resume) => `
+            <div class="item">
+              <div class="item-head">
+                <div class="title">${resume.fullName || 'Unnamed Candidate'}</div>
+                <span class="status">${(resume.fileType || 'FILE').toUpperCase()}</span>
+              </div>
+              <div class="meta">${resume.fileName}</div>
+              <div class="tags">
+                ${(resume.skills || []).length
+                  ? (resume.skills || []).map((skill) => `<span class="tag">${skill}</span>`).join('')
+                  : '<span class="tag">No extracted skills yet</span>'}
+              </div>
+            </div>
+          `).join('')
+        : '<div class="item"><div class="meta">No resumes found for this user.</div></div>';
+
+      dom.applyResumeId.innerHTML = optionsMarkup(
+        state.resumes,
+        '_id',
+        (resume) => `${resume.fullName || 'Resume'} - ${resume.fileName}`,
+        'No resumes available'
+      );
+    }
+
+    async function uploadAndParseResume() {
+      const file = document.getElementById('resumeFile').files[0];
+      const userId = document.getElementById('resumeUserId').value.trim();
+      const fullName = document.getElementById('resumeName').value.trim();
+      const email = document.getElementById('resumeEmail').value.trim();
+      const phone = document.getElementById('resumePhone').value.trim();
+
+      if (!file || !userId || !fullName || !email || !phone) {
+        toast('Complete the resume form and choose a file first.', true);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('userId', userId);
+      formData.append('fullName', fullName);
+      formData.append('email', email);
+      formData.append('phone', phone);
+      formData.append('resume', file);
+
+      try {
+        const upload = await request('/resumes/upload', { method: 'POST', body: formData });
+        const resumeId = upload.data.resumeId;
+
+        const fileText = await readTextIfPossible(file);
+        const extracted = textExtraction(fileText);
+
+        document.getElementById('resumeNotes').value = JSON.stringify(extracted, null, 2);
+
+        await request(`/resumes/${resumeId}/parse`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            skills: extracted.skills,
+            experience: extracted.experience,
+            education: [],
+            summary: extracted.summary,
+          }),
+        });
+
+        toast('Resume uploaded and parsed successfully.');
+        document.getElementById('resumeFile').value = '';
+        await refreshAll();
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    async function loadJobs() {
+      const result = await request('/jobs');
+      state.jobs = result.data || [];
+
+      dom.jobList.innerHTML = state.jobs.length
+        ? state.jobs.map((job) => `
+            <div class="item">
+              <div class="item-head">
+                <div class="title">${job.jobTitle}</div>
+                <span class="status ${job.status === 'Open' ? 'status-open' : 'status-closed'}">${job.status}</span>
+              </div>
+              <div class="meta">${job.location} | Applicants: ${job.applicantsCount || 0}</div>
+              <div class="tags">
+                ${(job.requiredSkills || []).map((skill) => `<span class="tag">${skill}</span>`).join('')}
+              </div>
+              <div class="actions">
+                <button class="btn-soft" onclick="selectJob('${job._id}')">Select</button>
+                <button class="btn-ghost" onclick="editJob('${job._id}')">Edit</button>
+                <button class="btn-danger" onclick="closeJob('${job._id}')">Close</button>
+              </div>
+            </div>
+          `).join('')
+        : '<div class="item"><div class="meta">No jobs posted yet.</div></div>';
+
+      const openJobs = state.jobs.filter((job) => job.status === 'Open');
+      dom.applyJobId.innerHTML = optionsMarkup(openJobs, '_id', (job) => `${job.jobTitle} (${job.location})`, 'No open jobs');
+      dom.shortlistJobId.innerHTML = optionsMarkup(state.jobs, '_id', (job) => `${job.jobTitle} (${job.status})`, 'No jobs available');
+    }
+
+    async function createJob() {
+      const requiredSkills = parseCommaList(document.getElementById('jobSkills').value);
+      const qualifications = parseCommaList(document.getElementById('jobQuals').value);
+
+      const payload = {
+        employerId: document.getElementById('jobEmployerId').value.trim(),
+        jobTitle: document.getElementById('jobTitle').value.trim(),
+        description: document.getElementById('jobDescription').value.trim(),
+        location: document.getElementById('jobLocation').value.trim(),
+        jobType: document.getElementById('jobType').value,
+        requiredSkills,
+        qualifications,
+      };
+
+      if (!payload.employerId || !payload.jobTitle || !payload.description || !payload.location || !requiredSkills.length) {
+        toast('Fill employer ID, title, description, location, and required skills.', true);
+        return;
+      }
+
+      try {
+        await request('/jobs/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        toast('Job posting created.');
+        document.getElementById('jobTitle').value = '';
+        document.getElementById('jobDescription').value = '';
+        document.getElementById('jobLocation').value = '';
+        document.getElementById('jobSkills').value = '';
+        document.getElementById('jobQuals').value = '';
+        await refreshAll();
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    async function editJob(jobId) {
+      const job = state.jobs.find((entry) => entry._id === jobId);
+      if (!job) return;
+
+      const title = window.prompt('Update job title', job.jobTitle || '');
+      if (title === null) return;
+      const location = window.prompt('Update location', job.location || '');
+      if (location === null) return;
+
+      try {
+        await request(`/jobs/${jobId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jobTitle: title.trim(),
+            location: location.trim(),
+            requiredSkills: job.requiredSkills || [],
+            qualifications: job.qualifications || [],
+          }),
+        });
+        toast('Job updated.');
+        await refreshAll();
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    async function closeJob(jobId) {
+      try {
+        await request(`/jobs/${jobId}/close`, { method: 'PUT' });
+        toast('Job closed successfully.');
+        await refreshAll();
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    function selectJob(jobId) {
+      dom.applyJobId.value = jobId;
+      dom.shortlistJobId.value = jobId;
+      toast('Job selected.');
+    }
+
+    async function applyToJob() {
+      const jobId = dom.applyJobId.value;
+      const resumeId = dom.applyResumeId.value;
+
+      if (!jobId || !resumeId) {
+        toast('Choose a job and a resume first.', true);
+        return;
+      }
+
+      const payload = {
+        applicantId: document.getElementById('applyApplicantId').value.trim(),
+        resumeId,
+        fullName: document.getElementById('applyName').value.trim(),
+        email: document.getElementById('applyEmail').value.trim(),
+        phone: document.getElementById('applyPhone').value.trim(),
+        city: document.getElementById('applyCity').value.trim(),
+        country: document.getElementById('applyCountry').value.trim(),
+      };
+
+      if (!payload.applicantId || !payload.fullName || !payload.email || !payload.phone || !payload.city || !payload.country) {
+        toast('Complete all application fields.', true);
+        return;
+      }
+
+      try {
+        await request(`/jobs/${jobId}/apply`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        toast('Application submitted with attached resume.');
+        await refreshAll();
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    async function loadApplications() {
+      const jobId = dom.shortlistJobId.value;
+      if (!jobId) {
+        dom.applicationList.innerHTML = '<div class="item"><div class="meta">Select a job to load candidates.</div></div>';
+        return;
+      }
+
+      const filter = document.getElementById('shortlistFilter').value;
+      const query = filter && filter !== 'all' ? `?status=${encodeURIComponent(filter)}` : '';
+
+      try {
+        const result = await request(`/jobs/${jobId}/applications${query}`);
+        state.applications = result.data.applications || [];
+
+        dom.applicationList.innerHTML = state.applications.length
+          ? state.applications.map((app) => `
+              <div class="item">
+                <div class="item-head">
+                  <div class="title">${app.fullName}</div>
+                  <span class="status ${app.status === 'Shortlisted' ? 'status-shortlisted' : ''}">${app.status}</span>
+                </div>
+                <div class="meta">${app.email} | ${app.phone} | ${app.city}, ${app.country}</div>
+                <div class="meta">Resume: ${(app.resumeId && app.resumeId.fileName) || app.resumeId || 'N/A'}</div>
+                <div class="actions">
+                  <button class="btn-brand" onclick="updateApplicationStatus('${app._id}', 'Shortlisted')">Shortlist</button>
+                  <button class="btn-ghost" onclick="updateApplicationStatus('${app._id}', 'Under Review')">Remove Shortlist</button>
+                  <button class="btn-soft" onclick="updateApplicationStatus('${app._id}', 'Accepted')">Accept</button>
+                  <button class="btn-danger" onclick="updateApplicationStatus('${app._id}', 'Rejected')">Reject</button>
+                </div>
+              </div>
+            `).join('')
+          : '<div class="item"><div class="meta">No candidates found for this job/filter.</div></div>';
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    async function updateApplicationStatus(applicationId, status) {
+      try {
+        await request(`/jobs/applications/${applicationId}/status`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status }),
+        });
+
+        toast(`Candidate updated to ${status}.`);
+        await loadApplications();
+      } catch (error) {
+        toast(error.message, true);
+      }
+    }
+
+    async function checkHealth() {
+      try {
+        await request('/health');
+        dom.healthText.textContent = 'API status: online';
+      } catch {
+        dom.healthText.textContent = 'API status: offline';
+      }
+    }
+
+    async function refreshAll() {
+      await loadResumes();
+      await loadJobs();
+      await loadApplications();
+    }
+
+    document.getElementById('uploadParseBtn').addEventListener('click', uploadAndParseResume);
+    document.getElementById('loadResumeBtn').addEventListener('click', loadResumes);
+    document.getElementById('createJobBtn').addEventListener('click', createJob);
+    document.getElementById('loadJobBtn').addEventListener('click', loadJobs);
+    document.getElementById('applyBtn').addEventListener('click', applyToJob);
+    document.getElementById('loadApplicationsBtn').addEventListener('click', loadApplications);
+    document.getElementById('shortlistJobId').addEventListener('change', loadApplications);
+    document.getElementById('shortlistFilter').addEventListener('change', loadApplications);
+
+    window.updateApplicationStatus = updateApplicationStatus;
+    window.selectJob = selectJob;
+    window.editJob = editJob;
+    window.closeJob = closeJob;
+
+    (async function init() {
+      await checkHealth();
+      await refreshAll();
+    })();
+  </script>
+</body>
+</html>

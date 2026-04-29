@@ -1,0 +1,393 @@
+{
+  "info": {
+    "name": "Resume & Job Portal API",
+    "description": "Complete API collection for Resume Upload & Parsing and Job Posting Management system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:1008/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "1008",
+          "path": ["api", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "FEATURE 01: Resume Upload & Parsing",
+      "item": [
+        {
+          "name": "1.1 Upload Resume",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "resume",
+                  "type": "file",
+                  "src": "sample_resume.pdf"
+                },
+                {
+                  "key": "userId",
+                  "value": "user-001",
+                  "type": "text"
+                },
+                {
+                  "key": "fullName",
+                  "value": "John Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "john@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "+1-555-0123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/upload",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "upload"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.2 Parse Resume (Extract Skills & Experience)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skills\": [\"JavaScript\", \"Node.js\", \"MongoDB\", \"React\"],\n  \"experience\": [\n    {\n      \"jobTitle\": \"Senior Software Engineer\",\n      \"company\": \"Tech Company ABC\",\n      \"duration\": \"2 years\",\n      \"description\": \"Developed RESTful APIs and managed database\"\n    },\n    {\n      \"jobTitle\": \"Junior Developer\",\n      \"company\": \"Startup XYZ\",\n      \"duration\": \"1.5 years\",\n      \"description\": \"Worked on frontend development\"\n    }\n  ],\n  \"education\": [\n    {\n      \"degree\": \"Bachelor of Science\",\n      \"institution\": \"University of Technology\",\n      \"year\": \"2020\"\n    }\n  ],\n  \"summary\": \"Experienced full-stack developer with expertise in Node.js and MongoDB\"\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/{{resumeId}}/parse",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "{{resumeId}}", "parse"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.3 Get Resume by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/{{resumeId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "{{resumeId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.4 Get All User Resumes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/user/user-001",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "user", "user-001"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.5 Update Resume",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skills\": [\"JavaScript\", \"Node.js\", \"MongoDB\", \"React\", \"Express\"],\n  \"fullName\": \"John Doe\",\n  \"email\": \"john.doe@example.com\",\n  \"phone\": \"+1-555-0123\",\n  \"summary\": \"Updated summary with new skills\"\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/{{resumeId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "{{resumeId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.6 Delete Resume",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/{{resumeId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "{{resumeId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "1.7 Download Resume File",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/resumes/{{resumeId}}/download",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "resumes", "{{resumeId}}", "download"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FEATURE 02: Job Posting & Management",
+      "item": [
+        {
+          "name": "2.1 Create Job Posting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"employerId\": \"employer-001\",\n  \"jobTitle\": \"Senior Full-Stack Developer\",\n  \"description\": \"Looking for an experienced full-stack developer with expertise in Node.js and React. Must have at least 4 years of experience in web development.\",\n  \"requiredSkills\": [\"JavaScript\", \"Node.js\", \"React\", \"MongoDB\", \"Express\"],\n  \"qualifications\": [\n    \"Bachelor's degree in Computer Science or related field\",\n    \"4+ years of professional development experience\",\n    \"Experience with REST APIs\"\n  ],\n  \"location\": \"San Francisco, CA\",\n  \"salary\": {\n    \"min\": 120000,\n    \"max\": 180000,\n    \"currency\": \"USD\"\n  },\n  \"jobType\": \"Full-Time\",\n  \"experience\": {\n    \"min\": 4,\n    \"max\": 8\n  },\n  \"deadline\": \"2024-04-30\"\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/create",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "create"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.2 Get Job Posting by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/{{jobId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "{{jobId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.3 Get All Job Postings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/jobs?status=Open&location=&jobType=Full-Time",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "Open"
+                },
+                {
+                  "key": "location",
+                  "value": ""
+                },
+                {
+                  "key": "jobType",
+                  "value": "Full-Time"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.4 Get Jobs by Employer",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/employer/employer-001",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "employer", "employer-001"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.5 Update Job Posting",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jobTitle\": \"Senior Full-Stack Developer (Updated)\",\n  \"description\": \"Updated job description with additional requirements\",\n  \"requiredSkills\": [\"JavaScript\", \"Node.js\", \"React\", \"MongoDB\", \"Express\", \"Docker\"],\n  \"salary\": {\n    \"min\": 130000,\n    \"max\": 190000,\n    \"currency\": \"USD\"\n  },\n  \"status\": \"Open\"\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/{{jobId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "{{jobId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.6 Close Job Posting",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/{{jobId}}/close",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "{{jobId}}", "close"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.7 Delete Job Posting",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/{{jobId}}",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "{{jobId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.8 Search Jobs by Skills",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skills\": [\"JavaScript\", \"Node.js\", \"MongoDB\"]\n}\n"
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/search/skills",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "search", "skills"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2.9 Apply to Job (Increment Applicants)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "http://localhost:1008/api/jobs/{{jobId}}/apply",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "1008",
+              "path": ["api", "jobs", "{{jobId}}", "apply"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "resumeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "jobId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

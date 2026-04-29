@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Applicants</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            margin: 0;
+            padding: 0;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 25px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .btn {
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-secondary {
+            background: #edf2ff;
+            color: #27272a;
+        }
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+        .btn.active {
+            background: #4c51bf;
+            color: white;
+        }
+        .panel {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+            margin-bottom: 20px;
+        }
+        .panel h2 {
+            margin-top: 0;
+        }
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .filters label {
+            display: block;
+            margin-bottom: 6px;
+            color: #4a5568;
+            font-size: 0.9rem;
+        }
+        .filters select,
+        .filters input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.95rem;
+        }
+        .applicant-card {
+            background: white;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        .applicant-card .top-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .item-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .meta-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            color: #4a5568;
+            font-size: 0.94rem;
+        }
+        .meta-label {
+            font-weight: 600;
+            color: #2d3748;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .status-open {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .status-closed {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        .status-other {
+            background: #e2e8f0;
+            color: #1a202c;
+        }
+        .alert {
+            padding: 16px 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.95rem;
+        }
+        .alert.show {
+            display: block;
+        }
+        .alert.success {
+            background: #f0fff4;
+            color: #2f855a;
+            border: 1px solid #c6f6d5;
+        }
+        .alert.error {
+            background: #fff5f5;
+            color: #c53030;
+            border: 1px solid #fed7d7;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #4a5568;
+            background: #f7fafc;
+            border-radius: 14px;
+        }
+        @media (max-width: 720px) {
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filters {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Applicants</h1>
+                <p id="jobLabel" style="color:#4a5568; margin:6px 0 0;">Loading job information...</p>
+            </div>
+            <button class="btn btn-secondary" onclick="window.location.href='index.html'">Back to Jobs</button>
+        </div>
+
+        <div id="alert" class="alert"></div>
+
+        <div class="panel">
+            <h2>Applicant Filters</h2>
+            <div class="filters">
+                <div>
+                    <label for="sortOrder">Order</label>
+                    <select id="sortOrder" onchange="loadApplicants()">
+                        <option value="recent">Show Most Recent</option>
+                        <option value="oldest">Show Oldest</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Applicant View</label>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button id="viewAllBtn" class="btn btn-secondary active" onclick="setApplicantView('all')">All Applicants</button>
+                        <button id="viewShortlistedBtn" class="btn btn-secondary" onclick="setApplicantView('shortlisted')">View Shortlisted</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="applicantList"></div>
+    </div>
+
+    <script>
+        const API_URL = window.API_URL || localStorage.getItem('API_URL') || (window.location.origin && window.location.origin !== 'null' ? `${window.location.origin}/api` : 'http://localhost:1008/api');
+        const queryParams = new URLSearchParams(window.location.search);
+        const jobId = queryParams.get('jobId');
+        let currentView = 'all';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!jobId) {
+                showAlert('Job ID is missing. Open this page from the job listings.', 'error');
+                document.getElementById('applicantList').innerHTML = `<div class="empty-state"><h3>Missing job reference</h3><p>Open this page from the jobs list.</p></div>`;
+                return;
+            }
+            loadJobTitle();
+            loadApplicants();
+        });
+
+        function showAlert(message, type = 'success') {
+            const alertBox = document.getElementById('alert');
+            alertBox.textContent = message;
+            alertBox.className = `alert show ${type}`;
+            setTimeout(() => {
+                alertBox.className = 'alert';
+            }, 5000);
+        }
+
+        function setApplicantView(view) {
+            currentView = view;
+            document.getElementById('viewAllBtn').classList.toggle('active', view === 'all');
+            document.getElementById('viewShortlistedBtn').classList.toggle('active', view === 'shortlisted');
+            loadApplicants();
+        }
+
+        async function loadJobTitle() {
+            try {
+                const response = await fetch(`${API_URL}/jobs/${jobId}`);
+                if (!response.ok) {
+                    throw new Error(`Job fetch failed (${response.status})`);
+                }
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('jobLabel').textContent = `${data.data.jobTitle} (${jobId})`;
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Error loading job details: ' + error.message, 'error');
+                console.error('loadJobTitle error:', error);
+            }
+        }
+
+        async function loadApplicants() {
+            if (!jobId) return;
+            try {
+                const params = new URLSearchParams();
+                const sortOrder = document.getElementById('sortOrder').value;
+
+                params.append('sort', sortOrder);
+                if (currentView === 'shortlisted') {
+                    params.append('status', 'Shortlisted');
+                } else {
+                    params.append('status', 'not_shortlisted');
+                }
+
+                const url = `${API_URL}/jobs/${jobId}/applications?${params.toString()}`;
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`Applications fetch failed (${response.status})`);
+                }
+                const data = await response.json();
+
+                if (!data.success) {
+                    showAlert(data.message, 'error');
+                    document.getElementById('applicantList').innerHTML = `<div class="empty-state"><h3>Error loading applicants</h3><p>${data.message}</p></div>`;
+                    return;
+                }
+
+                renderApplicants(data.data.applications);
+            } catch (error) {
+                showAlert('Error loading applicants: ' + error.message, 'error');
+                document.getElementById('applicantList').innerHTML = `<div class="empty-state"><h3>Unable to load applicants</h3><p>${error.message}</p></div>`;
+                console.error('loadApplicants error:', error);
+            }
+        }
+
+        function renderApplicants(applicants) {
+            const container = document.getElementById('applicantList');
+            if (!applicants || applicants.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No applicants found</h3>
+                        <p>Try changing the order or applicant view.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            applicants.forEach(app => {
+                const statusClass = app.status === 'Shortlisted' ? 'status-open' : app.status === 'Rejected' ? 'status-closed' : 'status-other';
+                html += `
+                    <div class="applicant-card">
+                        <div class="top-row">
+                            <div>
+                                <div class="item-title">${app.fullName}</div>
+                                <div style="color:#4a5568;">${app.email} · ${app.phone}</div>
+                            </div>
+                            <span class="status-badge ${statusClass}">${app.status}</span>
+                        </div>
+                        <div class="meta-row">
+                            <div class="meta-item"><span class="meta-label">Applied</span><span>${new Date(app.appliedAt).toLocaleString()}</span></div>
+                            <div class="meta-item"><span class="meta-label">Resume</span><span>${(app.resumeId && app.resumeId.fileName) ? app.resumeId.fileName : 'N/A'}</span></div>
+                            <div class="meta-item"><span class="meta-label">Location</span><span>${app.city}, ${app.country}</span></div>
+                        </div>
+                        <div class="button-row" style="margin-top:16px; justify-content:flex-end; gap: 10px;">
+                            ${app.status !== 'Shortlisted' ? `<button class="btn btn-primary" onclick="shortlistApplicant('${app._id}')">Shortlist</button>` : `<button class="btn btn-secondary" onclick="removeShortlistApplicant('${app._id}')">Remove from Shortlist</button>`}
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        async function shortlistApplicant(applicationId) {
+            try {
+                const response = await fetch(`${API_URL}/jobs/applications/${applicationId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'Shortlisted' })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showAlert('Applicant shortlisted successfully', 'success');
+                    loadApplicants();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Error shortlisting applicant: ' + error.message, 'error');
+            }
+        }
+
+        async function removeShortlistApplicant(applicationId) {
+            try {
+                const response = await fetch(`${API_URL}/jobs/applications/${applicationId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'Applied' })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showAlert('Applicant removed from shortlist', 'success');
+                    loadApplicants();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            } catch (error) {
+                showAlert('Error removing from shortlist: ' + error.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+.feature-jobs .job-create-card,
+.feature-jobs .job-list-card,
+.feature-jobs .job-edit-card {
+	border-top: 4px solid #1f5f3f;
+}
+
+.feature-jobs .job-list-card .list-item {
+	background: linear-gradient(180deg, #fffdf8, #f6f8f3);
+}
+
+.feature-jobs .job-edit-card {
+	background: linear-gradient(180deg, #fffdf8, #f4fbf5);
+}

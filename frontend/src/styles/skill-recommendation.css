@@ -1,0 +1,129 @@
+.feature-skill-recommendation .skill-reco-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.skill-reco-inner-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-reco-inner-tabs button {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: transform 200ms ease, background 200ms ease;
+}
+
+.skill-reco-inner-tabs button:hover {
+  transform: translateY(-1px);
+}
+
+.skill-reco-inner-tabs button.active {
+  background: var(--brand);
+  color: #ffffff;
+  border-color: var(--brand);
+}
+
+.skill-reco-progress-bar {
+  width: 100%;
+  height: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #f3f3ef;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.skill-reco-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand), #2a7a54);
+}
+
+.skill-reco-progress-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.skill-reco-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-right: 6px;
+}
+
+.skill-reco-dot.matched {
+  background: var(--ok);
+}
+
+.skill-reco-dot.missing {
+  background: var(--warn);
+}
+
+.skill-reco-skill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.skill-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #f3f3ef;
+  font-size: 0.92rem;
+}
+
+.skill-tag.matched {
+  background: #daf2e4;
+  border-color: #9ac7ab;
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.skill-priority-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  font-size: 0.78rem;
+}
+
+.skill-priority-pill.high {
+  background: #fde8e1;
+  border-color: #e8b9a8;
+  color: var(--warn);
+}
+
+.skill-priority-pill.medium {
+  background: #fff2d6;
+  border-color: #e9d1a1;
+  color: #8a4c13;
+}
+
+.skill-priority-pill.low {
+  background: #eaf1f7;
+  border-color: #c4d6ea;
+  color: #1e4f7a;
+}
+

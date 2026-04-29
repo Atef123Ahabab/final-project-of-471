@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Job - Resume & Job Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #667eea;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 10px;
+        }
+
+        .job-details {
+            background: #f8f9fa;
+            padding: 30px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .job-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .job-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .job-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .skills-section {
+            margin-bottom: 20px;
+        }
+
+        .skills-section h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .application-form {
+            padding: 30px;
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a67d8;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .confirmation-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .confirmation-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-title {
+            color: #155724;
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .confirmation-text {
+            color: #155724;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-details {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            text-align: left;
+            display: inline-block;
+        }
+
+        .confirmation-details p {
+            margin: 8px 0;
+            color: #333;
+        }
+
+        .drag-drop-zone {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .drag-drop-zone:hover {
+            border-color: #5568d3;
+            background: #f0f4ff;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .drag-drop-zone.dragover {
+            border-color: #48bb78;
+            background: #e6fffa;
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(72, 187, 120, 0.3);
+        }
+
+        .drag-drop-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            transition: transform 0.3s;
+        }
+
+        .drag-drop-zone.dragover .drag-drop-icon {
+            transform: scale(1.2);
+        }
+
+        .drag-drop-text {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 1em;
+            margin-bottom: 5px;
+        }
+
+        .drag-drop-sub {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .file-name {
+            margin-top: 15px;
+            padding: 12px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            color: #666;
+            font-size: 0.9em;
+            border-left: 4px solid #28a745;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Job Application</h1>
+            <p>Apply for this position</p>
+        </div>
+
+        <div id="jobDetails" class="job-details">
+            <!-- Job details will be loaded here -->
+            <div style="text-align: center;">
+                <div class="loading"></div>
+                <p>Loading job details...</p>
+            </div>
+        </div>
+
+        <div class="application-form">
+            <a href="index.html" class="back-link">← Back to Home</a>
+
+            <div id="applicationAlert" class="alert"></div>
+
+            <div class="form-section">
+                <h2>👤 Your Information</h2>
+
+                <form id="applicationForm" onsubmit="submitApplication(event)">
+                    <input type="hidden" id="jobId">
+
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="applicantName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="applicantEmail" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="applicantPhone" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" id="applicantCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Country *</label>
+                            <input type="text" id="applicantCountry" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Upload Your Resume *</label>
+                        <div class="drag-drop-zone" id="appliedragDropZone">
+                            <div class="drag-drop-icon">📄</div>
+                            <div class="drag-drop-text">Drag and drop your resume here</div>
+                            <div class="drag-drop-sub">or click to browse files (PDF, DOC, DOCX, TXT, RTF)</div>
+                            <input type="file" id="appliedResumeFile" accept=".pdf,.doc,.docx,.txt,.rtf" style="display: none;">
+                        </div>
+                        <div id="appliedFileName" class="file-name" style="display: none;"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cover Letter (Optional)</label>
+                        <textarea id="coverLetter" rows="6" placeholder="Tell us why you're interested in this position and why you're a good fit..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="index.html" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.protocol + '//' + window.location.hostname + ':1008/api';
+
+        // Get job ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobId = urlParams.get('jobId');
+
+        if (!jobId) {
+            showAlert('applicationAlert', 'Job ID is required', 'error');
+        } else {
+            document.getElementById('jobId').value = jobId;
+            loadJobDetails(jobId);
+        }
+
+        async function loadJobDetails(jobId) {
+            try {
+                const response = await fetch(`${API_URL}/jobs/${jobId}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const job = data.data;
+                    document.getElementById('jobDetails').innerHTML = `
+                        <div class="job-title">${job.jobTitle}</div>
+                        <div class="job-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">📍 Location:</span>
+                                <span>${job.location}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">💼 Type:</span>
+                                <span>${job.jobType}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">👥 Applicants:</span>
+                                <span>${job.applicantsCount || 0}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">📊 Status:</span>
+                                <span>${job.status}</span>
+                            </div>
+                        </div>
+                        ${job.salary && (job.salary.min || job.salary.max) ? `
+                            <div style="margin-bottom: 15px; font-size: 18px; font-weight: bold; color: #667eea;">
+                                💰 Salary: $${job.salary.min || 0} - $${job.salary.max || 0} ${job.salary.currency || 'USD'}
+                            </div>
+                        ` : ''}
+                        <div class="job-description">
+                            <strong>Description:</strong><br>
+                            ${job.description}
+                        </div>
+                        ${job.requiredSkills && job.requiredSkills.length > 0 ? `
+                            <div class="skills-section">
+                                <h3>🔧 Required Skills</h3>
+                                <div class="skill-tags">
+                                    ${job.requiredSkills.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                        ${job.qualifications && job.qualifications.length > 0 ? `
+                            <div class="skills-section">
+                                <h3>📋 Qualifications</h3>
+                                <ul style="color: #555; padding-left: 20px;">
+                                    ${job.qualifications.map(qual => `<li>${qual}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+                        ${job.experience && (job.experience.min || job.experience.max) ? `
+                            <div class="skills-section">
+                                <h3>⏰ Experience Required</h3>
+                                <p style="color: #555;">${job.experience.min || 0} - ${job.experience.max || 0} years</p>
+                            </div>
+                        ` : ''}
+                    `;
+                } else {
+                    document.getElementById('jobDetails').innerHTML = `
+                        <div style="text-align: center; color: #721c24;">
+                            <h3>Job not found</h3>
+                            <p>The job you're looking for doesn't exist or has been removed.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('jobDetails').innerHTML = `
+                    <div style="text-align: center; color: #721c24;">
+                        <h3>Error loading job details</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function submitApplication(event) {
+            event.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading"></div> Submitting...';
+            submitBtn.disabled = true;
+
+            // Check if resume file is selected
+            if (!uploadedResumeId) {
+                if (!selectedResumeFile) {
+                    showAlert('applicationAlert', 'Please upload a resume before submitting', 'error');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+                // Upload the resume first
+                const uploadSuccess = await uploadResumeFile();
+                if (!uploadSuccess) {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+            }
+
+            const jobId = document.getElementById('jobId').value;
+            const applicantId = 'user-001'; // You can modify this to get from user session
+            const resumeId = uploadedResumeId;
+            const fullName = document.getElementById('applicantName').value;
+            const email = document.getElementById('applicantEmail').value;
+            const phone = document.getElementById('applicantPhone').value;
+            const city = document.getElementById('applicantCity').value;
+            const country = document.getElementById('applicantCountry').value;
+            const coverLetter = document.getElementById('coverLetter').value;
+
+            try {
+                const response = await fetch(`${API_URL}/jobs/${jobId}/apply`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        applicantId,
+                        resumeId,
+                        fullName,
+                        email,
+                        phone,
+                        city,
+                        country,
+                        coverLetter
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success message
+                    showAlert('applicationAlert', '✅ Thanks for applying! Your application has been saved to our database.', 'success');
+                    
+                    // Hide the form and show confirmation
+                    document.getElementById('applicationForm').style.display = 'none';
+                    
+                    // Create and show confirmation message
+                    const confirmationMsg = document.createElement('div');
+                    confirmationMsg.innerHTML = `
+                        <div style="background: #d4edda; border: 2px solid #28a745; border-radius: 10px; padding: 30px; text-align: center; margin-top: 20px;">
+                            <div style="font-size: 3em; margin-bottom: 15px;">🎉</div>
+                            <h2 style="color: #155724; margin-bottom: 10px;">Thank You for Applying!</h2>
+                            <p style="color: #155724; font-size: 16px; margin-bottom: 15px;">
+                                Your application has been successfully submitted and saved to our database.
+                            </p>
+                            <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px; text-align: left; display: inline-block;">
+                                <p style="margin: 8px 0; color: #333;"><strong>✓ Application ID:</strong> ${data.data?.applicationId || 'Saved'}</p>
+                                <p style="margin: 8px 0; color: #333;"><strong>✓ Status:</strong> Applied</p>
+                                <p style="margin: 8px 0; color: #333;"><strong>✓ Submitted:</strong> Just now</p>
+                            </div>
+                            <p style="color: #155724; font-size: 14px; margin-bottom: 20px;">
+                                We've stored your information securely. You'll be notified about next steps.
+                            </p>
+                            <a href="index.html" class="btn btn-primary" style="display: inline-block; margin-top: 10px;">Back to Home</a>
+                        </div>
+                    `;
+                    
+                    const formSection = document.querySelector('.form-section');
+                    formSection.appendChild(confirmationMsg);
+                    
+                    // Reset form data
+                    document.getElementById('applicationForm').reset();
+                    selectedResumeFile = null;
+                    uploadedResumeId = null;
+                    document.getElementById('appliedFileName').style.display = 'none';
+                    
+                    // Redirect after 5 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 5000);
+                } else {
+                    showAlert('applicationAlert', data.message || 'Error submitting application', 'error');
+                }
+            } catch (error) {
+                showAlert('applicationAlert', 'Error: ' + error.message, 'error');
+            } finally {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showAlert(elementId, message, type) {
+            const alertEl = document.getElementById(elementId);
+            alertEl.textContent = message;
+            alertEl.className = `alert alert-${type}`;
+            alertEl.style.display = 'block';
+
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    alertEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // ============ RESUME TAB SWITCHING ============
+        let uploadedResumeId = null;
+
+        // ============ DRAG AND DROP RESUME UPLOAD ============
+        let selectedResumeFile = null;
+
+        const dragDropZone = document.getElementById('appliedragDropZone');
+        const resumeFileInput = document.getElementById('appliedResumeFile');
+
+        dragDropZone.addEventListener('click', () => resumeFileInput.click());
+
+        dragDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.add('dragover');
+        });
+
+        dragDropZone.addEventListener('dragenter', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.add('dragover');
+        });
+
+        dragDropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.remove('dragover');
+        });
+
+        dragDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragDropZone.classList.remove('dragover');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleResumeFileSelect(files[0]);
+            }
+        });
+
+        resumeFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleResumeFileSelect(e.target.files[0]);
+            }
+        });
+
+        function handleResumeFileSelect(file) {
+            const fileName = file.name;
+            const fileType = file.name.split('.').pop().toLowerCase();
+            const allowedTypes = ['pdf', 'doc', 'docx', 'txt', 'rtf'];
+
+            if (!allowedTypes.includes(fileType)) {
+                showAlert('applicationAlert', 'Invalid file type. Supported: PDF, DOC, DOCX, TXT, RTF', 'error');
+                selectedResumeFile = null;
+                resumeFileInput.value = '';
+                document.getElementById('appliedFileName').style.display = 'none';
+                return;
+            }
+
+            selectedResumeFile = file;
+            const fileSizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+            
+            document.getElementById('appliedFileName').innerHTML = `
+                <div style="color: #28a745; font-weight: 600;">
+                    ✅ File Selected: ${fileName}
+                </div>
+                <div style="color: #666; font-size: 12px; margin-top: 5px;">
+                    Size: ${fileSizeInMB} MB | Type: ${fileType.toUpperCase()}
+                </div>
+            `;
+            document.getElementById('appliedFileName').style.display = 'block';
+            showAlert('applicationAlert', `✅ Resume file "${fileName}" selected!`, 'success');
+        }
+
+        async function uploadResumeFile() {
+            if (!selectedResumeFile) {
+                showAlert('applicationAlert', 'Please select a resume file to upload', 'error');
+                return false;
+            }
+
+            const formData = new FormData();
+            formData.append('userId', 'user-001');
+            formData.append('fullName', document.getElementById('applicantName').value || 'Applicant');
+            formData.append('email', document.getElementById('applicantEmail').value || '');
+            formData.append('phone', document.getElementById('applicantPhone').value || '');
+            formData.append('resume', selectedResumeFile);
+
+            try {
+                const response = await fetch(`${API_URL}/resumes/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    uploadedResumeId = data.data.resumeId;
+                    showAlert('applicationAlert', '✅ Resume uploaded successfully! You can now submit your application.', 'success');
+                    return true;
+                } else {
+                    showAlert('applicationAlert', 'Error uploading resume: ' + data.message, 'error');
+                    return false;
+                }
+            } catch (error) {
+                showAlert('applicationAlert', 'Error uploading resume: ' + error.message, 'error');
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
