@@ -1,5 +1,9 @@
 # Resume & Job Portal API
 
+full project report is here :
+https://docs.google.com/document/d/1z0mUzlm3ibUF8PoAjRP0Opmjof7yQQB8/edit?usp=sharing&ouid=108434485562262220863&rtpof=true&sd=true
+
+
 A complete REST API system for resume upload/parsing and job postings management using Node.js, Express, and MongoDB.
 
 ## Features
