@@ -22,7 +22,15 @@ const PORT = process.env.PORT || 1008;
 const HOST = process.env.HOST || '0.0.0.0';
 
 // Middleware
+<<<<<<< HEAD
 app.use(cors());
+=======
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || '*',
+  credentials: true,
+};
+app.use(cors(corsOptions));
+>>>>>>> 07905ae (Prepare for Render deployment: CORS, API base, env example, deployment README)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(auditLogger);

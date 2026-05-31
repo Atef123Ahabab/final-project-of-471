@@ -8,8 +8,18 @@ export async function apiRequest(path, options = {}) {
         'Content-Type': 'application/json',
       };
 
+<<<<<<< HEAD
   // Use full backend URL instead of relying on proxy
   const fullUrl = path.startsWith('http') ? path : `http://localhost:1008${path}`;
+=======
+  // Use build-time Vite env `VITE_API_BASE` or fallback to localhost
+  const API_BASE = typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_BASE
+    ? import.meta.env.VITE_API_BASE
+    : 'http://localhost:1008';
+
+  // Use full backend URL instead of relying on proxy
+  const fullUrl = path.startsWith('http') ? path : `${API_BASE}${path}`;
+>>>>>>> 07905ae (Prepare for Render deployment: CORS, API base, env example, deployment README)
 
   const token =
     typeof window !== 'undefined' ? window.localStorage.getItem('auth_token') : null;
